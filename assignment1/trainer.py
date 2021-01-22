@@ -100,8 +100,6 @@ class BaseTrainer:
                     # You can access the validation loss in val_history["loss"]
                     if global_step>1 and val_loss<=train_history["loss"][global_step-1]:
                         stop_signal +=1
-                    
-                     
                     else:
                         stop_signal = 0
                     
