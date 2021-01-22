@@ -16,14 +16,9 @@ def calculate_accuracy(X: np.ndarray, targets: np.ndarray, model: BinaryModel) -
         Accuracy (float)
     """
     # TODO Implement this function (Task 2c)
-    f = model.forward(X)
-    f = np.round(f,0)
-    
-  
-   
-    
-    #accuracy = np.nonzero((outputs == targets)/(outputs.shape[0]))
-    accuracy = np.count_nonzero((f==targets))/targets.shape[0]
+    y_hat = model.forward(X)
+    y_hat = np.round(y_hat,0)
+    accuracy = np.count_nonzero((y_hat==targets))/targets.shape[0]
     return accuracy
 
 

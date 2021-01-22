@@ -1,5 +1,6 @@
 import numpy as np
 import utils
+from tqdm import tqdm
 
 # NO NEED TO CHANGE THIS CODE
 
@@ -72,9 +73,10 @@ class BaseTrainer:
             accuracy={}
         )
 
+
         global_step = 0
-        for epoch in range(num_epochs):
-            print("epoch:",epoch,"/",num_epochs)
+        for epoch in tqdm(range(num_epochs)):
+            #print("epoch:",epoch,"/",num_epochs)
             train_loader = utils.batch_loader(
                 self.X_train, self.Y_train, self.batch_size, shuffle=self.shuffle_dataset)
             for X_batch, Y_batch in iter(train_loader):
