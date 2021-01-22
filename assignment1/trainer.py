@@ -75,8 +75,12 @@ class BaseTrainer:
 
 
         global_step = 0
+        stop_signal = 0
+
         for epoch in tqdm(range(num_epochs)):
-            #print("epoch:",epoch,"/",num_epochs)
+            if stop_signal>=10:
+                print(epoch)
+                break
             train_loader = utils.batch_loader(
                 self.X_train, self.Y_train, self.batch_size, shuffle=self.shuffle_dataset)
             for X_batch, Y_batch in iter(train_loader):
@@ -86,6 +90,7 @@ class BaseTrainer:
 
                 # Track validation loss / accuracy every time we progress 20% through the dataset
                 if global_step % num_steps_per_val == 0:
+                    
                     val_loss, accuracy_train, accuracy_val = self.validation_step()
                     train_history["accuracy"][global_step] = accuracy_train
                     val_history["loss"][global_step] = val_loss
@@ -93,5 +98,12 @@ class BaseTrainer:
 
                     # TODO (Task 2d): Implement early stopping here.
                     # You can access the validation loss in val_history["loss"]
+                    if global_step>1 and val_loss<=train_history["loss"][global_step-1]:
+                        stop_signal +=1
+                    
+                     
+                    else:
+                        stop_signal = 0
+                    
                 global_step += 1
         return train_history, val_history
