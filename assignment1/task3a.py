@@ -22,12 +22,12 @@ class SoftmaxModel:
 
     def __init__(self, l2_reg_lambda: float):
         # Define number of input nodes
-        self.I = None
+        self.I = 784
 
         # Define number of output nodes
-        self.num_outputs = None
+        self.num_outputs = 10
         self.w = np.zeros((self.I, self.num_outputs))
-        self.grad = None
+        self.grad = 0
 
         self.l2_reg_lambda = l2_reg_lambda
 
@@ -39,7 +39,15 @@ class SoftmaxModel:
             y: output of model with shape [batch size, num_outputs]
         """
         # TODO implement this function (Task 3a)
-        return None
+        batch_size = X.shape[0]
+        y = np.zeros((batch_size,self.num_outputs))
+        z = self.w@X.T
+        for i in range(batch_size):
+            for j in range(self.num_outputs):
+                num = np.exp(z[i,j])
+                denum = np.sum(np.exp(z))-num
+                y[i,j] = num/denum
+        return y
 
     def backward(self, X: np.ndarray, outputs: np.ndarray, targets: np.ndarray) -> None:
         """
@@ -71,7 +79,8 @@ def one_hot_encode(Y: np.ndarray, num_classes: int):
     Returns:
         Y: shape [Num examples, num classes]
     """
-    encoded_array = np.zeros((num_classes,10))
+    num_examples = Y.shape[0]
+    encoded_array = np.zeros((num_examples,num_classes))
     for i,target in enumerate(Y):
         encoded_array[i][target-1] = 1
     return encoded_array
