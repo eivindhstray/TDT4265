@@ -16,7 +16,8 @@ def pre_process_images(X: np.ndarray):
     assert X.shape[1] == 784,\
         f"X.shape[1]: {X.shape[1]}, should be 784"
     # TODO implement this function (Task 2a)
-    X  = np.c_[X,np.ones(X.shape[0])]
+    X = np.hstack((X,np.ones((X.shape[0],1))))
+
     return X
 
 
