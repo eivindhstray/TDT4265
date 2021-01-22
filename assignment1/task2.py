@@ -36,10 +36,11 @@ class LogisticTrainer(BaseTrainer):
         """
         y_hat = model.forward(X_batch)
         model.backward(X_batch,y_hat,Y_batch)
-        
+        model.w -= 0.01*model.grad
 
         # TODO: Implement this function (task 2b)
         loss = cross_entropy_loss(Y_batch,y_hat)
+        print(loss)
         return loss
 
     def validation_step(self):
