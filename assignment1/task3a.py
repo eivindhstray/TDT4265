@@ -2,7 +2,7 @@ import numpy as np
 import utils
 from task2a import pre_process_images
 np.random.seed(1)
-
+from tqdm import tqdm
 
 def cross_entropy_loss(targets: np.ndarray, outputs: np.ndarray):
     """
@@ -13,16 +13,22 @@ def cross_entropy_loss(targets: np.ndarray, outputs: np.ndarray):
         Cross entropy error (float)
     """
     # TODO implement this function (Task 3a)
+    N = targets.shape[0]
+    C_sum = 0
+    for y,y_hat in zip(targets,outputs):
+        C_sum -= (y*np.log(y_hat) + (1-y)*np.log(1-y_hat))
+    C = C_sum/N
     assert targets.shape == outputs.shape,\
         f"Targets shape: {targets.shape}, outputs: {outputs.shape}"
-    raise NotImplementedError
+    return C
+    
 
 
 class SoftmaxModel:
 
     def __init__(self, l2_reg_lambda: float):
         # Define number of input nodes
-        self.I = 784
+        self.I = 785
 
         # Define number of output nodes
         self.num_outputs = 10
@@ -41,12 +47,14 @@ class SoftmaxModel:
         # TODO implement this function (Task 3a)
         batch_size = X.shape[0]
         y = np.zeros((batch_size,self.num_outputs))
-        z = self.w@X.T
-        for i in range(batch_size):
+        z = X.dot(self.w)
+        for i in tqdm(range(batch_size)):
             for j in range(self.num_outputs):
                 num = np.exp(z[i,j])
-                denum = np.sum(np.exp(z))-num
+                denum = np.sum(np.exp(z[j]))-num
                 y[i,j] = num/denum
+        
+        
         return y
 
     def backward(self, X: np.ndarray, outputs: np.ndarray, targets: np.ndarray) -> None:
@@ -64,6 +72,7 @@ class SoftmaxModel:
         assert targets.shape == outputs.shape,\
             f"Output shape: {outputs.shape}, targets: {targets.shape}"
         self.grad = np.zeros_like(self.w)
+        self.grad = -X@(targets-outputs)
         assert self.grad.shape == self.w.shape,\
              f"Grad shape: {self.grad.shape}, w: {self.w.shape}"
 
@@ -82,7 +91,9 @@ def one_hot_encode(Y: np.ndarray, num_classes: int):
     num_examples = Y.shape[0]
     encoded_array = np.zeros((num_examples,num_classes))
     for i,target in enumerate(Y):
-        encoded_array[i][target-1] = 1
+        
+        encoded_array[i][target[0]] = 1
+        
     return encoded_array
 
 
@@ -134,10 +145,11 @@ if __name__ == "__main__":
     # Simple test for forward pass. Note that this does not cover all errors!
     model = SoftmaxModel(0.0)
     logits = model.forward(X_train)
+    print("yo")
     np.testing.assert_almost_equal(
         logits.mean(), 1/10,
         err_msg="Since the weights are all 0's, the softmax activation should be 1/10")
-
+    print("checkpoint2")
     # Gradient approximation check for 100 images
     X_train = X_train[:100]
     Y_train = Y_train[:100]
