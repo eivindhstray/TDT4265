@@ -17,7 +17,11 @@ def calculate_accuracy(X: np.ndarray, targets: np.ndarray, model: SoftmaxModel) 
         Accuracy (float)
     """
     # TODO: Implement this function (task 3c)
-    accuracy = 0
+    y_hat = np.array(model.forward(X))
+    y_pos = np.argmax(y_hat,axis=1)
+    #y_pred = one_hot_encode(y_pos,model.num_outputs)
+    y = np.argmax(targets,axis = 1)
+    accuracy = np.count_nonzero(y_pos == y)/X.shape[0]
     return accuracy
 
 
@@ -36,7 +40,10 @@ class SoftmaxTrainer(BaseTrainer):
             loss value (float) on batch
         """
         # TODO: Implement this function (task 3b)
-        loss = 0
+        Y_hat = model.forward(X_batch)
+        model.backward(X_batch,Y_hat,Y_batch)
+        model.w -= self.learning_rate*model.grad 
+        loss = cross_entropy_loss(Y_batch,Y_hat)
         return loss
 
     def validation_step(self):
@@ -62,7 +69,7 @@ class SoftmaxTrainer(BaseTrainer):
 
 if __name__ == "__main__":
     # hyperparameters DO NOT CHANGE IF NOT SPECIFIED IN ASSIGNMENT TEXT
-    num_epochs = 50
+    num_epochs = 20
     learning_rate = 0.01
     batch_size = 128
     l2_reg_lambda = 0
@@ -93,7 +100,7 @@ if __name__ == "__main__":
     print("Final Train accuracy:", calculate_accuracy(X_train, Y_train, model))
     print("Final Validation accuracy:", calculate_accuracy(X_val, Y_val, model))
 
-    plt.ylim([0.2, .6])
+    #plt.ylim([0.2, .6])
     utils.plot_loss(train_history["loss"],
                     "Training Loss", npoints_to_average=10)
     utils.plot_loss(val_history["loss"], "Validation Loss")
@@ -104,7 +111,7 @@ if __name__ == "__main__":
     plt.show()
 
     # Plot accuracy
-    plt.ylim([0.89, .93])
+    #plt.ylim([0.89, .93])
     utils.plot_loss(train_history["accuracy"], "Training Accuracy")
     utils.plot_loss(val_history["accuracy"], "Validation Accuracy")
     plt.xlabel("Number of Training Steps")
