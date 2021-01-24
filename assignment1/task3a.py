@@ -13,12 +13,12 @@ def cross_entropy_loss(targets: np.ndarray, outputs: np.ndarray):
         Cross entropy error (float)
     """
     # TODO implement this function (Task 3a)
-    N = targets.shape[1]
+    N = targets.shape[0]
     C_sum = 0
     for i in range(targets.shape[0]):
         for y,y_hat in zip(targets[i],outputs[i]):
             C_sum += -(y*np.log(y_hat))
-    C = C_sum
+    C = C_sum/N
     assert targets.shape == outputs.shape,\
         f"Targets shape: {targets.shape}, outputs: {outputs.shape}"
     return C
