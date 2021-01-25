@@ -26,11 +26,14 @@ a = model.forward(image)
 
 print(np.argmax(a))
 
-image_2d = printable[:-1].reshape(28,28)*255
+predicted = (np.argmax(a))
+
+image_2d = printable[:-1].reshape(28,28)
 
 
 
 #print(image)
+fig = plt.Figure
 plt.imshow(image_2d)
 plt.show()
 

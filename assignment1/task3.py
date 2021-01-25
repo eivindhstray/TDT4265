@@ -122,7 +122,6 @@ if __name__ == "__main__":
     plt.savefig("task3b_softmax_train_accuracy.png")
     plt.show()
 
-    pickle.dump(model, open("model3a.sav",'wb'))
 
     # Train a model with L2 regularization (task 4b)
 
