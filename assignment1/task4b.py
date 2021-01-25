@@ -30,12 +30,16 @@ predicted = (np.argmax(a))
 
 image_2d = printable[:-1].reshape(28,28)
 
+label = "predicted :" + str(predicted)
 
 
 #print(image)
-fig = plt.Figure
+
 plt.imshow(image_2d)
+plt.title(label)
 plt.show()
+
+
 
 model = pickle.load(open('model3a.sav', 'rb'))
 
