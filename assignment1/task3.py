@@ -44,7 +44,7 @@ class SoftmaxTrainer(BaseTrainer):
         # TODO: Implement this function (task 3b)
         Y_hat = model.forward(X_batch)
         model.backward(X_batch,Y_hat,Y_batch)
-        model.w -= self.learning_rate*model.grad 
+        model.w -= self.learning_rate*model.grad
         loss = cross_entropy_loss(Y_batch,Y_hat)
         return loss
 
@@ -123,9 +123,14 @@ if __name__ == "__main__":
     plt.show()
 
 
+    #save model
+    filename = 'model3a_1.sav'
+
     # Train a model with L2 regularization (task 4b)
 
     model1 = SoftmaxModel(l2_reg_lambda=1.0)
+    pickle.dump(model, open(filename, 'wb'))
+
     trainer = SoftmaxTrainer(
         model1, learning_rate, batch_size, shuffle_dataset,
         X_train, Y_train, X_val, Y_val,
@@ -134,7 +139,7 @@ if __name__ == "__main__":
     # You can finish the rest of task 4 below this point.
 
     # Plotting of softmax weights (Task 4b)
-    
+
     plt.imsave("task4b_softmax_weight.png", weight, cmap="gray")
 
     # Plotting of accuracy for difference values of lambdas (task 4c)
@@ -145,4 +150,4 @@ if __name__ == "__main__":
 
     plt.savefig("task4d_l2_reg_norms.png")
 
-   
+

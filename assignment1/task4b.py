@@ -38,7 +38,3 @@ plt.imshow(image_2d)
 plt.show()
 
 model = pickle.load(open('model3a.sav', 'rb'))
-
-
-
-

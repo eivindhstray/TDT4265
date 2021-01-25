@@ -2,6 +2,7 @@ import numpy as np
 import utils
 from task2a import pre_process_images
 np.random.seed(1)
+import pickle
 from tqdm import tqdm
 
 def cross_entropy_loss(targets: np.ndarray, outputs: np.ndarray):
