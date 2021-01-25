@@ -73,7 +73,7 @@ class SoftmaxModel:
         assert targets.shape == outputs.shape,\
             f"Output shape: {outputs.shape}, targets: {targets.shape}"
         self.grad = np.zeros_like(self.w)
-        self.grad = -X.T@(targets-outputs)
+        self.grad = -X.T@(targets-outputs) + self.l2_reg_lambda*2*self.w
         assert self.grad.shape == self.w.shape,\
              f"Grad shape: {self.grad.shape}, w: {self.w.shape}"
 

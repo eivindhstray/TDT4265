@@ -18,10 +18,10 @@ def calculate_accuracy(X: np.ndarray, targets: np.ndarray, model: SoftmaxModel) 
     """
     # TODO: Implement this function (task 3c)
     y_hat = np.array(model.forward(X))
-    y_pos = np.argmax(y_hat,axis=1)
-    y = np.argmax(targets,axis = 1)
+    y_predicted_position = np.argmax(y_hat,axis=1)
+    y_position = np.argmax(targets,axis = 1)
     #print(y_pos,":",y)
-    accuracy = np.count_nonzero(y_pos == y)/X.shape[0]
+    accuracy = np.count_nonzero(y_position == y_predicted_position)/X.shape[0]
     return accuracy
 
 
@@ -69,7 +69,7 @@ class SoftmaxTrainer(BaseTrainer):
 
 if __name__ == "__main__":
     # hyperparameters DO NOT CHANGE IF NOT SPECIFIED IN ASSIGNMENT TEXT
-    num_epochs = 40
+    num_epochs = 20
     learning_rate = 0.01
     batch_size = 128
     l2_reg_lambda = 0
