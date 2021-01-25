@@ -41,14 +41,16 @@ plt.show()
 
 
 model = pickle.load(open('model3a_1.sav', 'rb'))
-image1 = X_train[0]
-im = (model.w.T[0])*image1
-im = im[:-1].reshape(28,28)
-plt.imshow(im)
+image1 = X_train[0:10]
+frame = np.zeros((28,28*10))
+j = 0
+for i in range(0,28*10,28):
+    im = (model.w.T[j])*image1[j]
+    frame[:28,i:i+28] = im[:-1].reshape(28,28)
+    j+=1
+print(frame.shape)
+plt.imshow(frame)
 plt.show()
-
-#plt.imshow(img)
-
 
 
 

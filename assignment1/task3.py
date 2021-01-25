@@ -74,7 +74,7 @@ if __name__ == "__main__":
     num_epochs = 20
     learning_rate = 0.01
     batch_size = 128
-    l2_reg_lambda = 0
+    l2_reg_lambda = 1
     shuffle_dataset = True
 
     # Load dataset
