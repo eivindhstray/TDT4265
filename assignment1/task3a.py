@@ -73,8 +73,8 @@ class SoftmaxModel:
         # which is defined in the constructor.
         assert targets.shape == outputs.shape,\
             f"Output shape: {outputs.shape}, targets: {targets.shape}"
-        self.grad = np.zeros_like(self.w)
-        self.grad = -X.T@(targets-outputs) + self.l2_reg_lambda*2*self.w
+        N = X.shape[0]
+        self.grad = -(1/N)*X.T@(targets-outputs) + self.l2_reg_lambda*2*self.w
         assert self.grad.shape == self.w.shape,\
              f"Grad shape: {self.grad.shape}, w: {self.w.shape}"
 
@@ -146,11 +146,9 @@ if __name__ == "__main__":
     # Simple test for forward pass. Note that this does not cover all errors!
     model = SoftmaxModel(0.0)
     logits = model.forward(X_train)
-    
     np.testing.assert_almost_equal(
         logits.mean(), 1/10,
         err_msg="Since the weights are all 0's, the softmax activation should be 1/10")
-    
     # Gradient approximation check for 100 images
     X_train = X_train[:100]
     Y_train = Y_train[:100]
