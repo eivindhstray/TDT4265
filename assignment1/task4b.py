@@ -33,7 +33,6 @@ image_2d = printable[:-1].reshape(28,28)
 label = "predicted :" + str(predicted)
 
 
-#print(image)
 
 plt.imshow(image_2d)
 plt.title(label)
@@ -41,4 +40,15 @@ plt.show()
 
 
 
-model = pickle.load(open('model3a.sav', 'rb'))
+model = pickle.load(open('model3a_1.sav', 'rb'))
+image1 = X_train[0]
+im = (model.w.T[0])*image1
+im = im[:-1].reshape(28,28)
+plt.imshow(im)
+plt.show()
+
+#plt.imshow(img)
+
+
+
+
