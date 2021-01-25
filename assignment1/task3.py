@@ -20,8 +20,8 @@ def calculate_accuracy(X: np.ndarray, targets: np.ndarray, model: SoftmaxModel) 
     y_hat = np.array(model.forward(X))
     y_predicted_position = np.argmax(y_hat,axis=1)
     y_position = np.argmax(targets,axis = 1)
-    for (y_p,y) in zip(y_predicted_position,y_position):
-        print("Predicted: ",y_p,"    Ground truth: ",y)
+    #for (y_p,y) in zip(y_predicted_position,y_position):
+    #    print("Predicted: ",y_p,"    Ground truth: ",y)
     accuracy = np.count_nonzero(y_position == y_predicted_position)/X.shape[0]
     return accuracy
 
@@ -133,7 +133,7 @@ if __name__ == "__main__":
 
     # Plotting of softmax weights (Task 4b)
     
-    plt.imsave("task4b_softmax_weight.png", weight, cmap="gray")
+    #plt.imsave("task4b_softmax_weight.png", weight, cmap="gray")
 
     # Plotting of accuracy for difference values of lambdas (task 4c)
     l2_lambdas = [1, .1, .01, .001]
