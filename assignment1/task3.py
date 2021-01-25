@@ -5,6 +5,7 @@ from task2a import pre_process_images
 from trainer import BaseTrainer
 from task3a import cross_entropy_loss, SoftmaxModel, one_hot_encode
 np.random.seed(0)
+import pickle
 
 
 def calculate_accuracy(X: np.ndarray, targets: np.ndarray, model: SoftmaxModel) -> float:
@@ -20,8 +21,8 @@ def calculate_accuracy(X: np.ndarray, targets: np.ndarray, model: SoftmaxModel) 
     y_hat = np.array(model.forward(X))
     y_predicted_position = np.argmax(y_hat,axis=1)
     y_position = np.argmax(targets,axis = 1)
-    for (y_p,y) in zip(y_predicted_position,y_position):
-        print("Predicted: ",y_p,"    Ground truth: ",y)
+    #for (y_p,y) in zip(y_predicted_position,y_position):
+    #    print("Predicted: ",y_p,"    Ground truth: ",y)
     accuracy = np.count_nonzero(y_position == y_predicted_position)/X.shape[0]
     return accuracy
 
@@ -121,6 +122,8 @@ if __name__ == "__main__":
     plt.savefig("task3b_softmax_train_accuracy.png")
     plt.show()
 
+    pickle.dump(model, open("model3a.sav",'wb'))
+
     # Train a model with L2 regularization (task 4b)
 
     model1 = SoftmaxModel(l2_reg_lambda=1.0)
@@ -142,3 +145,5 @@ if __name__ == "__main__":
     # Task 4d - Plotting of the l2 norm for each weight
 
     plt.savefig("task4d_l2_reg_norms.png")
+
+   

@@ -5,15 +5,37 @@ from task2a import pre_process_images
 np.random.seed(1)
 from tqdm import tqdm
 import matplotlib.pyplot as plt
+import pickle
 
-image1 = mnist.load()[0]
+import random
 
-image1 = image1[3]
+X_train, Y_train, X_val, Y_val = utils.load_full_mnist()
 
-image1 = image1.reshape(28,28)
+X_train = pre_process_images(X_train)
 
-print(image1)
-plt.imshow(image1)
+index = random.randint(0,X_train.shape[0])
+
+image = np.array([X_train[index]])
+
+printable=X_train[index]
+
+
+model = pickle.load(open('model3a.sav', 'rb'))
+
+a = model.forward(image)
+
+print(np.argmax(a))
+
+image_2d = printable[:-1].reshape(28,28)*255
+
+
+
+#print(image)
+plt.imshow(image_2d)
 plt.show()
+
+model = pickle.load(open('model3a.sav', 'rb'))
+
+
 
 
