@@ -79,8 +79,8 @@ class BaseTrainer:
 
         for epoch in tqdm(range(num_epochs)):
             if stop_signal>=10:
-                print(epoch)
-                break
+                print("breakbreak")
+                return train_history, val_history
             train_loader = utils.batch_loader(
                 self.X_train, self.Y_train, self.batch_size, shuffle=self.shuffle_dataset)
             for X_batch, Y_batch in iter(train_loader):
@@ -98,7 +98,7 @@ class BaseTrainer:
 
                     # TODO (Task 2d): Implement early stopping here.
                     # You can access the validation loss in val_history["loss"]
-                    if global_step>1 and val_loss<=train_history["loss"][global_step-1]:
+                    if global_step>1 and val_loss>=train_history["loss"][global_step-1]:
                         stop_signal +=1
                     else:
                         stop_signal = 0
