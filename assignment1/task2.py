@@ -3,6 +3,7 @@ import utils
 import matplotlib.pyplot as plt
 from task2a import cross_entropy_loss, BinaryModel, pre_process_images
 from trainer import BaseTrainer
+
 np.random.seed(0)
 
 
@@ -64,6 +65,9 @@ class LogisticTrainer(BaseTrainer):
         accuracy_val = calculate_accuracy(
             X_val, Y_val, self.model)
         return loss, accuracy_train, accuracy_val
+
+
+
 
 
 if __name__ == "__main__":
