@@ -72,9 +72,9 @@ class SoftmaxTrainer(BaseTrainer):
 if __name__ == "__main__":
     # hyperparameters DO NOT CHANGE IF NOT SPECIFIED IN ASSIGNMENT TEXT
     num_epochs = 20
-    learning_rate = 0.001
+    learning_rate = 0.01
     batch_size = 128
-    l2_reg_lambda = 0.1
+    l2_reg_lambda = 0.01
     shuffle_dataset = True
 
     # Load dataset
@@ -88,10 +88,6 @@ if __name__ == "__main__":
 
     # Intialize model
     model = SoftmaxModel(l2_reg_lambda)
-
-    filename = 'model3a_001.sav'
-    pickle.dump(model, open(filename, 'wb'))
-
     # Train model
     trainer = SoftmaxTrainer(
         model, learning_rate, batch_size, shuffle_dataset,
