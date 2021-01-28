@@ -10,12 +10,22 @@ def pre_process_images(X: np.ndarray):
     Returns:
         X: images of shape [batch size, 785] in the range (-1, 1)
     """
+
+
     X = X.astype(float)
-    X -= 127.0
-    X  /= 255.0
+
+    #X -= 127.0
+    #X  /= 255.0
+
+    xmin= 0
+    xmax= 255
+
+    X = 2*(X-xmin)/ (xmax -xmin)-1
+
     assert X.shape[1] == 784,\
         f"X.shape[1]: {X.shape[1]}, should be 784"
     # TODO implement this function (Task 2a)
+
     X = np.hstack((X,np.ones((X.shape[0],1))))
 
     return X

@@ -145,6 +145,7 @@ if __name__ == "__main__":
 
     # Simple test for forward pass. Note that this does not cover all errors!
     model = SoftmaxModel(0.0)
+
     logits = model.forward(X_train)
     
     np.testing.assert_almost_equal(
