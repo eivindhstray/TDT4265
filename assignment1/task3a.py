@@ -50,13 +50,10 @@ class SoftmaxModel:
         batch_size = X.shape[0]
         y = np.zeros((batch_size,self.num_outputs))
         z = X.dot(self.w)
-        for i in range(batch_size):
-            for j in range(self.num_outputs):
-                num = np.exp(z[i,j])
-                denum = np.sum(np.exp(z[i]))
-                y[i,j] = num/denum
         
-                
+        num = np.exp(z)
+        denum = np.transpose(np.array([np.sum(np.exp(z),axis=1)]))
+        y = np.divide(num,denum)
         return y
 
     def backward(self, X: np.ndarray, outputs: np.ndarray, targets: np.ndarray) -> None:
