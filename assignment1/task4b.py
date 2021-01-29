@@ -5,8 +5,7 @@ from task2a import pre_process_images
 from trainer import BaseTrainer
 from task2 import LogisticTrainer
 from task2a import BinaryModel
-from task3a import SoftmaxModel
-from task3 import SoftmaxTrainer, cross_entropy_loss, one_hot_encode, calculate_accuracy
+from task3 import*
 
 np.random.seed(1)
 from tqdm import tqdm
@@ -86,17 +85,17 @@ def makeAccimage():
     l2_lambdas = [1, .1, .01, .001]
 
     for i in l2_lambdas:
-        model = SoftmaxModel(l2_reg_lambda=i)
-        # Train model
+        model = SoftmaxModel(l2_reg_lambda=1)
+        #    Train model
         trainer = SoftmaxTrainer(
             model, learning_rate, batch_size, shuffle_dataset,
             X_train, Y_train, X_val, Y_val,
         )
         train_history, val_history = trainer.train(num_epochs)
 
-        # Plot accuracy
-        plt.ylim([0.60, .95])
-        utils.plot_loss(val_history["accuracy"], "Validation Accuracy with $\lambda$ ={}".format(i))
+    # Plot accuracy
+    plt.ylim([0.60, .95])
+    utils.plot_loss(val_history["accuracy"], "Validation Accuracy with $\lambda$ ={}".format(i))
 
     plt.xlabel("Number of Training Steps")
     plt.ylabel("Accuracy")

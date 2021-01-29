@@ -72,7 +72,7 @@ class SoftmaxTrainer(BaseTrainer):
 
 if __name__ == "__main__":
     # hyperparameters DO NOT CHANGE IF NOT SPECIFIED IN ASSIGNMENT TEXT
-    num_epochs = 20
+    num_epochs = 1
     learning_rate = 0.01
     batch_size = 128
     l2_reg_lambda = 0.01
@@ -86,6 +86,31 @@ if __name__ == "__main__":
     Y_val = one_hot_encode(Y_val, 10)
 
     # ANY PARTS OF THE CODE BELOW THIS CAN BE CHANGED.
+
+    #plotting for different lambdas:
+    l2_lambdas = [1, .1, .01, .001]
+
+    val_acc = []
+
+    for i in l2_lambdas:
+        model = SoftmaxModel(l2_reg_lambda=1)
+        #    Train model
+        trainer = SoftmaxTrainer(
+            model, learning_rate, batch_size, shuffle_dataset,
+            X_train, Y_train, X_val, Y_val,
+        )
+        train_history, val_history = trainer.train(num_epochs)
+        val_acc.append(val_history["accuracy"])
+
+        # Plot accuracy
+        
+        utils.plot_loss(val_history["accuracy"], "Validation Accuracy with $\lambda$ ={}".format(i))
+    plt.ylim([0.60, .95])
+    plt.xlabel("Number of Training Steps")
+    plt.ylabel("Accuracy")
+    plt.legend()
+    plt.show()
+    print("done")
 
     # Intialize model
     model = SoftmaxModel(l2_reg_lambda)
@@ -122,6 +147,9 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig("task3b_softmax_train_accuracy.png")
     plt.show()
+
+
+    
 
 
     #save model
