@@ -45,7 +45,7 @@ def makingPrediction():
 def visualModeltraining():
     X_train, Y_train, X_val, Y_val = utils.load_full_mnist()
     X_train = pre_process_images(X_train)
-    model = pickle.load(open('model3a_1.sav', 'rb'))
+    model = pickle.load(open('model3a_0,1.sav', 'rb'))
     image1 = X_train[0:10]
     frame = np.zeros((28, 28 * 10))
     j = 0
@@ -56,6 +56,8 @@ def visualModeltraining():
     print(frame.shape)
     plt.imshow(frame)
     plt.show()
+    plt.imsave("task4b_softmax_weight.png", frame, cmap="gray")
+    return frame
 
 if __name__ == '__main__':
     visualModeltraining()

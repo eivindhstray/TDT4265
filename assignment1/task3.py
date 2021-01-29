@@ -6,6 +6,7 @@ from trainer import BaseTrainer
 from task3a import cross_entropy_loss, SoftmaxModel, one_hot_encode
 np.random.seed(0)
 import pickle
+from task4b import*
 
 
 def calculate_accuracy(X: np.ndarray, targets: np.ndarray, model: SoftmaxModel) -> float:
@@ -139,8 +140,8 @@ if __name__ == "__main__":
     # You can finish the rest of task 4 below this point.
 
     # Plotting of softmax weights (Task 4b)
-
-    plt.imsave("task4b_softmax_weight.png", weight, cmap="gray")
+    #weight = visualModeltraining()
+    plt.imsave("task4b_softmax_weight_2.png", weight, cmap="gray")
 
     # Plotting of accuracy for difference values of lambdas (task 4c)
     l2_lambdas = [1, .1, .01, .001]
