@@ -72,7 +72,7 @@ class SoftmaxTrainer(BaseTrainer):
 
 if __name__ == "__main__":
     # hyperparameters DO NOT CHANGE IF NOT SPECIFIED IN ASSIGNMENT TEXT
-    num_epochs = 50
+    num_epochs = 20
     learning_rate = 0.01
     batch_size = 128
     l2_reg_lambda = 0.01
@@ -109,8 +109,8 @@ if __name__ == "__main__":
     plt.xlabel("Number of Training Steps")
     plt.ylabel("Accuracy")
     plt.legend()
-    plt.show()
     plt.savefig("task4c_l2_reg_accuracy.png")
+    plt.show()
     print("done")
 
     # Intialize model
