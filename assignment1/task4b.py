@@ -53,7 +53,6 @@ def visualModeltraining():
         im = (model.w.T[j]) * image1[j]
         frame[:28, i:i + 28] = im[:-1].reshape(28, 28)
         j += 1
-    print(frame.shape)
     plt.imshow(frame)
     plt.show()
     plt.imsave("task4b_softmax_weight.png", frame, cmap="gray")
