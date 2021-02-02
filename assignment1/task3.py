@@ -92,6 +92,8 @@ if __name__ == "__main__":
 
     val_acc = []
 
+    weights = []
+
     for i in l2_lambdas:
         model = SoftmaxModel(l2_reg_lambda=1)
         #    Train model
@@ -101,6 +103,7 @@ if __name__ == "__main__":
         )
         train_history, val_history = trainer.train(num_epochs)
         val_acc.append(val_history["accuracy"])
+        weights.append(model.w)
 
         # Plot accuracy
         
@@ -170,14 +173,20 @@ if __name__ == "__main__":
 
     # Plotting of softmax weights (Task 4b)
     #weight = visualModeltraining()
-    plt.imsave("task4b_softmax_weight_2.png", weight, cmap="gray")
+    #plt.imsave("task4b_softmax_weight_2.png", weight, cmap="gray")
 
     # Plotting of accuracy for difference values of lambdas (task 4c)
     l2_lambdas = [1, .1, .01, .001]
-    plt.savefig("task4c_l2_reg_accuracy.png")
+    #plt.savefig("task4c_l2_reg_accuracy.png")
 
     # Task 4d - Plotting of the l2 norm for each weight
-
+    weights_normalized = []
+    for w in weights:
+        weights_normalized.append(np.linalg.norm(w,2))
+    plt.plot(l2_lambdas, weights_normalized)
+    plt.xlabel("$\lambda$")
+    plt.ylabel("L_2 norm")
     plt.savefig("task4d_l2_reg_norms.png")
+
 
 
