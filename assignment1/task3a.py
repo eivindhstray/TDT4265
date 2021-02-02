@@ -139,7 +139,6 @@ if __name__ == "__main__":
     Y_train = one_hot_encode(Y_train, 10)
     assert X_train.shape[1] == 785,\
         f"Expected X_train to have 785 elements per image. Shape was: {X_train.shape}"
-
     # Simple test for forward pass. Note that this does not cover all errors!
     model = SoftmaxModel(0.0)
 
