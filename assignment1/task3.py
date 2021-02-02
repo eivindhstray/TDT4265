@@ -95,7 +95,7 @@ if __name__ == "__main__":
     weights = []
 
     for i in l2_lambdas:
-        model = SoftmaxModel(l2_reg_lambda=1)
+        model = SoftmaxModel(l2_reg_lambda=i)
         #    Train model
         trainer = SoftmaxTrainer(
             model, learning_rate, batch_size, shuffle_dataset,
@@ -160,7 +160,7 @@ if __name__ == "__main__":
     filename = 'model3a_1.sav'
 
     # Train a model with L2 regularization (task 4b)
-
+    '''
     model1 = SoftmaxModel(l2_reg_lambda=1.0)
     pickle.dump(model, open(filename, 'wb'))
 
@@ -169,6 +169,7 @@ if __name__ == "__main__":
         X_train, Y_train, X_val, Y_val,
     )
     train_history_reg01, val_history_reg01 = trainer.train(num_epochs)
+    '''
     # You can finish the rest of task 4 below this point.
 
     # Plotting of softmax weights (Task 4b)
@@ -176,14 +177,17 @@ if __name__ == "__main__":
     #plt.imsave("task4b_softmax_weight_2.png", weight, cmap="gray")
 
     # Plotting of accuracy for difference values of lambdas (task 4c)
-    l2_lambdas = [1, .1, .01, .001]
+    l2_lambdas = [str(1), str(0.1), str(0.01),str(0.001)]
     #plt.savefig("task4c_l2_reg_accuracy.png")
 
     # Task 4d - Plotting of the l2 norm for each weight
     weights_normalized = []
     for w in weights:
         weights_normalized.append(np.linalg.norm(w,2))
-    plt.plot(l2_lambdas, weights_normalized)
+    plt.bar(l2_lambdas[0], weights_normalized[0])
+    plt.bar(l2_lambdas[1], weights_normalized[1])
+    plt.bar(l2_lambdas[2], weights_normalized[2])
+    plt.bar(l2_lambdas[3], weights_normalized[3])
     plt.xlabel("$\lambda$")
     plt.ylabel("L_2 norm")
     plt.savefig("task4d_l2_reg_norms.png")
