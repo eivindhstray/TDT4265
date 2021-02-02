@@ -87,36 +87,7 @@ if __name__ == "__main__":
 
     # ANY PARTS OF THE CODE BELOW THIS CAN BE CHANGED.
 
-    #plotting for different lambdas:
-    l2_lambdas = [1, .1, .01, .001]
-
-    val_acc = []
-
-    weights = []
-
-    for i in l2_lambdas:
-        model = SoftmaxModel(l2_reg_lambda=i)
-        #    Train model
-        trainer = SoftmaxTrainer(
-            model, learning_rate, batch_size, shuffle_dataset,
-            X_train, Y_train, X_val, Y_val,
-        )
-        train_history, val_history = trainer.train(num_epochs)
-        val_acc.append(val_history["accuracy"])
-        weights.append(model.w)
-
-        # Plot accuracy
-        
-        utils.plot_loss(val_history["accuracy"], "Validation Accuracy with $\lambda$ ={}".format(i))
-    plt.ylim([0.60, .95])
-    plt.xlabel("Number of Training Steps")
-    plt.ylabel("Accuracy")
-    plt.legend()
-    plt.savefig("task4c_l2_reg_accuracy.png")
-    plt.show()
-    print("done")
-
-    # Intialize model
+     # Intialize model
     model = SoftmaxModel(l2_reg_lambda)
     # Train model
     trainer = SoftmaxTrainer(
@@ -151,13 +122,9 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig("task3b_softmax_train_accuracy.png")
     plt.show()
-
-
     
-
-
     #save model
-    filename = 'model3a_1.sav'
+    #filename = 'model3a_1.sav' #Uncomment to save a new version of the model
 
     # Train a model with L2 regularization (task 4b)
     '''
@@ -170,19 +137,49 @@ if __name__ == "__main__":
     )
     train_history_reg01, val_history_reg01 = trainer.train(num_epochs)
     '''
+
     # You can finish the rest of task 4 below this point.
 
+    #plotting for different lambdas:
+    l2_lambdas = [1, .1, .01, .001]
+
+    val_acc = []
+
+    weights = []
+
+    for i in l2_lambdas:
+        model = SoftmaxModel(l2_reg_lambda=i)
+        #    Train model
+        trainer = SoftmaxTrainer(
+            model, learning_rate, batch_size, shuffle_dataset,
+            X_train, Y_train, X_val, Y_val,
+        )
+        train_history, val_history = trainer.train(num_epochs)
+        val_acc.append(val_history["accuracy"])
+        weights.append(model.w)
+
+        # Plot accuracy
+        
+        utils.plot_loss(val_history["accuracy"], "Validation Accuracy with $\lambda$ ={}".format(i))
+    plt.ylim([0.60, .95])
+    plt.xlabel("Number of Training Steps")
+    plt.ylabel("Accuracy")
+    plt.legend()
+    plt.savefig("task4c_l2_reg_accuracy.png")
+    plt.show()
+
     # Plotting of softmax weights (Task 4b)
-    #weight = visualModeltraining()
+    #weight = visualModeltraining() - task4b.py 
     #plt.imsave("task4b_softmax_weight_2.png", weight, cmap="gray")
 
     # Plotting of accuracy for difference values of lambdas (task 4c)
-    l2_lambdas = [str(1), str(0.1), str(0.01),str(0.001)]
     #plt.savefig("task4c_l2_reg_accuracy.png")
 
-    # Task 4d - Plotting of the l2 norm for each weight
+    # Task 4d - Plotting of the l2 norm for each weight. Could be more elegant, but it's just a bar plot so frankly
+    # I don't really care
+    l2_lambdas = [str(1), str(0.1), str(0.01),str(0.001)]
     weights_normalized = []
-    for w in weights:
+    for w in weights: #Saved as an array during training above, one for each lambda.
         weights_normalized.append(np.linalg.norm(w,2))
     plt.bar(l2_lambdas[0], weights_normalized[0])
     plt.bar(l2_lambdas[1], weights_normalized[1])
