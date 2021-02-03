@@ -49,16 +49,16 @@ def makingPrediction():
 def visualModeltraining():
     X_train, Y_train, X_val, Y_val = utils.load_full_mnist()
     #X_train = pre_process_images(X_train)
-    model = pickle.load(open('model3a.sav', 'rb'))
+    model = pickle.load(open('model_lambda_1.sav', 'rb'))
     images = X_train[0:10]
     frame = np.zeros((28, 28 * 10))
     j = 0
     for i in range(0, 28 * 10, 28):
-        im = (model.w.T[j][:784]) * images[j]
+        im = (model.w.T[j][:784])# * images[j]
         frame[:28, i:i + 28] = im.reshape(28, 28)
         j += 1
     plt.imshow(frame)
-    plt.imsave("task4b_softmax_weight_0.png", frame, cmap="gray")
+    plt.imsave("task4b_softmax_weight_1.png", frame, cmap="gray")
     plt.show()
     return frame
 

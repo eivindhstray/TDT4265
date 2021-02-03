@@ -84,9 +84,9 @@ if __name__ == "__main__":
     Y_val = one_hot_encode(Y_val, 10)
 
     # ANY PARTS OF THE CODE BELOW THIS CAN BE CHANGED.
-
+    
      # Intialize model
-    model = SoftmaxModel(l2_reg_lambda)
+    model = SoftmaxModel(l2_reg_lambda = 1.0)
     # Train model
     trainer = SoftmaxTrainer(
         model, learning_rate, batch_size, shuffle_dataset,
@@ -122,18 +122,19 @@ if __name__ == "__main__":
     plt.show()
     
     #save model
-    #filename = 'model3a_1.sav' #Uncomment to save a new version of the model
-
+    pickle.dump(model, open('model_lambda_1.sav', 'wb'))
+    print("model saved")
     # Train a model with L2 regularization (task 4b)
     '''
-    model1 = SoftmaxModel(l2_reg_lambda=1.0)
-    pickle.dump(model, open(filename, 'wb'))
+    model = SoftmaxModel(l2_reg_lambda=1.0)
+    
 
     trainer = SoftmaxTrainer(
-        model1, learning_rate, batch_size, shuffle_dataset,
+        model, learning_rate, batch_size, shuffle_dataset,
         X_train, Y_train, X_val, Y_val,
     )
     train_history_reg01, val_history_reg01 = trainer.train(num_epochs)
+
     '''
 
     # You can finish the rest of task 4 below this point.
