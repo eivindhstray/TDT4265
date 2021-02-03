@@ -70,7 +70,7 @@ class SoftmaxTrainer(BaseTrainer):
 
 if __name__ == "__main__":
     # hyperparameters DO NOT CHANGE IF NOT SPECIFIED IN ASSIGNMENT TEXT
-    num_epochs = 20
+    num_epochs = 50
     learning_rate = 0.01
     batch_size = 128
     l2_reg_lambda = 0.01
@@ -122,8 +122,8 @@ if __name__ == "__main__":
     plt.show()
     
     #save model
-    pickle.dump(model, open('model_lambda_1.sav', 'wb'))
-    print("model saved")
+    #pickle.dump(model, open('model_lambda_1.sav', 'wb'))
+    #print("model saved")
     # Train a model with L2 regularization (task 4b)
     '''
     model = SoftmaxModel(l2_reg_lambda=1.0)
