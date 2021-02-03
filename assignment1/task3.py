@@ -21,9 +21,7 @@ def calculate_accuracy(X: np.ndarray, targets: np.ndarray, model: SoftmaxModel) 
     # TODO: Implement this function (task 3c)
     y_hat = np.array(model.forward(X))
     y_predicted_position = np.argmax(y_hat,axis=1)
-    y_position = np.argmax(targets,axis = 1)
-    #for (y_p,y) in zip(y_predicted_position,y_position):
-    #    print("Predicted: ",y_p,"    Ground truth: ",y)
+    y_position = np.argmax(targets,axis = 1) 
     accuracy = np.count_nonzero(y_position == y_predicted_position)/X.shape[0]
     return accuracy
 
