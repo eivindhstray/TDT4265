@@ -84,8 +84,8 @@ if __name__ == "__main__":
     Y_val = one_hot_encode(Y_val, 10)
 
     # ANY PARTS OF THE CODE BELOW THIS CAN BE CHANGED.
-    
-     # Intialize model
+    '''
+    # Intialize model
     model = SoftmaxModel(l2_reg_lambda = 0)
     # Train model
     trainer = SoftmaxTrainer(
@@ -125,6 +125,7 @@ if __name__ == "__main__":
     #pickle.dump(model, open('model_lambda_1.sav', 'wb'))
     #print("model saved")
     # Train a model with L2 regularization (task 4b)
+    '''
     '''
     model = SoftmaxModel(l2_reg_lambda=1.0)
     

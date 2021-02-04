@@ -45,7 +45,7 @@ def predictAndDisplay():  #This is just a test function that predicts a random h
     plt.show()
 
 
-def visualModeltraining(): #This function generates an image from the weights
+def visualModeltraining(): #This function generates an image from the weights.
     
     model = pickle.load(open('model_lambda_1.sav', 'rb')) #Change this for different models.
     frame = np.zeros((28, 28 * 10))
