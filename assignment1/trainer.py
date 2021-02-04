@@ -76,8 +76,8 @@ class BaseTrainer:
 
         global_step = 0
         stop = False
-        best = 1000000000
-        best_arr = []
+        best = 1000000000 #Some great number representing infinity
+        best_arr = [] #This will hold the best values for each epoch (validation loss)
 
         for epoch in tqdm(range(num_epochs)):
             if stop:
@@ -101,8 +101,6 @@ class BaseTrainer:
                     if best_this_epoch<best:
                         best = best_this_epoch
                     best_arr.append(best_this_epoch)
-                    
-
                     # TODO (Task 2d): Implement early stopping here.
                     # You can access the validation loss in val_history["loss"]
                     if best not in best_arr[-10:]:
