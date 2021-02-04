@@ -16,7 +16,7 @@ import random
 
 
 
-def makingPrediction():
+def predictAndDisplay():  #This is just a test function that predicts a random handwritten number from the dataset.
 
     X_train, Y_train, X_val, Y_val = utils.load_full_mnist()
 
@@ -33,7 +33,6 @@ def makingPrediction():
 
     a = model.forward(image)
 
-    print(np.argmax(a))
 
     predicted = (np.argmax(a))
 
@@ -46,15 +45,13 @@ def makingPrediction():
     plt.show()
 
 
-def visualModeltraining():
-    X_train, Y_train, X_val, Y_val = utils.load_full_mnist()
-    #X_train = pre_process_images(X_train)
-    model = pickle.load(open('model_lambda_1.sav', 'rb'))
-    images = X_train[0:10]
+def visualModeltraining(): #This function generates an image from the weights
+    
+    model = pickle.load(open('model_lambda_1.sav', 'rb')) #Change this for different models.
     frame = np.zeros((28, 28 * 10))
     j = 0
     for i in range(0, 28 * 10, 28):
-        im = (model.w.T[j][:784])# * images[j]
+        im = (model.w.T[j][:784])
         frame[:28, i:i + 28] = im.reshape(28, 28)
         j += 1
     plt.imshow(frame)
