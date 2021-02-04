@@ -103,7 +103,7 @@ class BaseTrainer:
                     best_arr.append(best_this_epoch)
                     # TODO (Task 2d): Implement early stopping here.
                     # You can access the validation loss in val_history["loss"]
-                    if best not in best_arr[-10:]:
+                    if (best not in best_arr[-10:] and len(best_arr)>=10):
                         stop = True
                     
                 global_step += 1

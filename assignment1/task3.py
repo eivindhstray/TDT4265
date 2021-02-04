@@ -86,7 +86,7 @@ if __name__ == "__main__":
     # ANY PARTS OF THE CODE BELOW THIS CAN BE CHANGED.
     
      # Intialize model
-    model = SoftmaxModel(l2_reg_lambda = 1.0)
+    model = SoftmaxModel(l2_reg_lambda = 0)
     # Train model
     trainer = SoftmaxTrainer(
         model, learning_rate, batch_size, shuffle_dataset,
