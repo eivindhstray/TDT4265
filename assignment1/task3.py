@@ -179,7 +179,7 @@ if __name__ == "__main__":
     l2_lambdas = [str(1), str(0.1), str(0.01),str(0.001)]
     weights_normalized = []
     for w in weights: #Saved as an array during training above, one for each lambda.
-        weights_normalized.append(np.linalg.norm(w))**2
+        weights_normalized.append(np.linalg.norm(w)**2)
     plt.bar(l2_lambdas[0], weights_normalized[0])
     plt.bar(l2_lambdas[1], weights_normalized[1])
     plt.bar(l2_lambdas[2], weights_normalized[2])
