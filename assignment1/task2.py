@@ -72,7 +72,7 @@ class LogisticTrainer(BaseTrainer):
 
 if __name__ == "__main__":
     # hyperparameters DO NOT CHANGE IF NOT SPECIFIED IN ASSIGNMENT TEXT
-    num_epochs = 500
+    num_epochs = 50
     learning_rate = 0.05
     batch_size = 128
     shuffle_dataset = False
@@ -135,7 +135,7 @@ if __name__ == "__main__":
         model, learning_rate, batch_size, shuffle_dataset,
         X_train, Y_train, X_val, Y_val,
     )
-    train_history_shuffle, val_history_shuffle = trainer.train(num_epochs)
+    train_history_shuffle, val_history_shuffle = trainer.train(num_epochs=50)
 
     plt.ylim([0., .2])
     utils.plot_loss(train_history["loss"],
