@@ -125,7 +125,7 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig("task2b_binary_train_accuracy.png")
     plt.show()
-    '''
+    
     # Task 2e - Create a comparison between training with and without shuffling
     shuffle_dataset = True
     # Intialize model
@@ -157,4 +157,4 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig("task2e_train_accuracy_shuffle_difference.png")
     plt.show()
-    '''
+    
