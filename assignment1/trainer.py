@@ -80,8 +80,6 @@ class BaseTrainer:
         best_arr = [] #This will hold the best values for each epoch (validation loss)
 
         for epoch in tqdm(range(num_epochs)):
-            if stop:
-                return train_history, val_history
             train_loader = utils.batch_loader(
                 self.X_train, self.Y_train, self.batch_size, shuffle=self.shuffle_dataset)
             for X_batch, Y_batch in iter(train_loader):
@@ -104,7 +102,7 @@ class BaseTrainer:
                     # TODO (Task 2d): Implement early stopping here.
                     # You can access the validation loss in val_history["loss"]
                     if (best not in best_arr[-10:] and len(best_arr)>=10):
-                        stop = True
+                        return train_history, val_history
                     
                 global_step += 1
         return train_history, val_history

@@ -113,7 +113,7 @@ if __name__ == "__main__":
     plt.legend()
     plt.xlabel("Number of Training Steps")
     plt.ylabel("Cross Entropy Loss - Average")
-    plt.savefig("task2b_binary_train_loss.png")
+    #plt.savefig("task2b_binary_train_loss.png")
     plt.show()
 
     # Plot accuracy
@@ -123,7 +123,7 @@ if __name__ == "__main__":
     plt.xlabel("Number of Training Steps")
     plt.ylabel("Accuracy")
     plt.legend()
-    plt.savefig("task2b_binary_train_accuracy.png")
+    #plt.savefig("task2b_binary_train_accuracy.png")
     plt.show()
     
     # Task 2e - Create a comparison between training with and without shuffling
@@ -145,7 +145,7 @@ if __name__ == "__main__":
     plt.legend()
     plt.xlabel("Number of Training Steps")
     plt.ylabel("Cross Entropy Loss - Average")
-    plt.savefig("task2e_train_loss_with_shuffle.png")
+    #plt.savefig("task2e_train_loss_with_shuffle.png")
     plt.show()
 
     plt.ylim([0.93, .99])
@@ -155,6 +155,6 @@ if __name__ == "__main__":
     plt.xlabel("Number of Training Steps")
     plt.ylabel("Accuracy")
     plt.legend()
-    plt.savefig("task2e_train_accuracy_shuffle_difference.png")
+    #plt.savefig("task2e_train_accuracy_shuffle_difference.png")
     plt.show()
     
