@@ -14,6 +14,15 @@ def pre_process_images(X: np.ndarray):
     assert X.shape[1] == 784,\
         f"X.shape[1]: {X.shape[1]}, should be 784"
     # TODO implement this function (Task 2a)
+
+    mean = np.mean(X)
+    std = np.std(X)
+
+    X = (X-mean)/std
+
+
+    X = np.hstack((X, np.ones((X.shape[0], 1))))
+
     return X
 
 
@@ -50,7 +59,7 @@ class SoftmaxModel:
         # Always reset random seed before weight init to get comparable results.
         np.random.seed(1)
         # Define number of input nodes
-        self.I = None
+        self.I = 785
         self.use_improved_sigmoid = use_improved_sigmoid
 
         # Define number of output nodes
@@ -79,7 +88,13 @@ class SoftmaxModel:
         # TODO implement this function (Task 2b)
         # HINT: For peforming the backward pass, you can save intermediate activations in varialbes in the forward pass.
         # such as self.hidden_layer_ouput = ...
-        return None
+
+        layer = X
+        for weight in self.ws:
+            z = layer.dot(weight)
+            layer = 1/(1+np.exp(-z))
+
+        return layer
 
     def backward(self, X: np.ndarray, outputs: np.ndarray,
                  targets: np.ndarray) -> None:
@@ -92,11 +107,15 @@ class SoftmaxModel:
             targets: labels/targets of each image of shape: [batch size, num_classes]
         """
         # TODO implement this function (Task 2b)
+
+
         assert targets.shape == outputs.shape,\
             f"Output shape: {outputs.shape}, targets: {targets.shape}"
         # A list of gradients.
         # For example, self.grads[0] will be the gradient for the first hidden layer
         self.grads = []
+
+        self.grads.append(-(1 / X.shape[0]) * X.T @ (targets - outputs))
 
         for grad, w in zip(self.grads, self.ws):
             assert grad.shape == w.shape,\

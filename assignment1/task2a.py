@@ -66,7 +66,7 @@ class BinaryModel:
             y: output of model with shape [batch size, 1]
         """
         # TODO implement this function (Task 2a)
-
+        print(len(self.w))
         z = -X.dot(self.w)
         y = 1/(1+np.exp(z))
 
