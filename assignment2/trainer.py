@@ -72,6 +72,12 @@ class BaseTrainer:
             accuracy={}
         )
 
+
+        global_step = 0
+        stop = False
+        best = 1000000000 #Some great number representing infinity
+        best_arr = [] #This will hold the best values for each epoch (validation loss)
+
         global_step = 0
         for epoch in range(num_epochs):
             train_loader = utils.batch_loader(
@@ -88,5 +94,9 @@ class BaseTrainer:
                     val_history["loss"][global_step] = val_loss
                     val_history["accuracy"][global_step] = accuracy_val
                     # TODO: Implement early stopping (copy from last assignment)
+
+                    if (best not in best_arr[-50:] and len(best_arr) >= 50):
+                        return train_history, val_history
+
                 global_step += 1
         return train_history, val_history
