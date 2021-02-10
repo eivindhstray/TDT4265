@@ -89,8 +89,8 @@ class SoftmaxModel:
         # such as self.hidden_layer_ouput = ...
 
         layer = X
-        for weight in self.ws:
-            z = layer.dot(weight)
+        for weights in self.ws:
+            z = layer.dot(weights)
             layer = 1/(1+np.exp(-z))
 
         return layer
