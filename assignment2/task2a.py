@@ -68,6 +68,7 @@ class SoftmaxModel:
 
         # Initialize the weights
         self.ws = []
+        self.hidden_layer_outputs = []
         prev = self.I
         for size in self.neurons_per_layer:
             w_shape = (prev, size)
@@ -87,13 +88,15 @@ class SoftmaxModel:
         # TODO implement this function (Task 2b)
         # HINT: For peforming the backward pass, you can save intermediate activations in varialbes in the forward pass.
         # such as self.hidden_layer_ouput = ...
-
-        layer = X
+        self.hidden_layer_outputs = [X]
+        layer_outputs = X
         for weights in self.ws:
-            z = layer.dot(weights)
-            layer = 1/(1+np.exp(-z))
+            z = layer_outputs.dot(weights)
+            layer_outputs = 1/(1+np.exp(-z))
+            self.hidden_layer_outputs.append(layer_outputs)
+            
 
-        return layer
+        return layer_outputs
 
     def backward(self, X: np.ndarray, outputs: np.ndarray,
                  targets: np.ndarray) -> None:
@@ -113,8 +116,11 @@ class SoftmaxModel:
         # A list of gradients.
         # For example, self.grads[0] will be the gradient for the first hidden layer
         self.grads = []
+        self.grads.append()
+        self.grads.append(-(1 / X.shape[0]) * self.hidden_layer_outputs[-1].T@(targets-outputs))
 
-        self.grads.append(-(1 / X.shape[0]) * X.T @ (targets - outputs))
+
+        
 
         for grad, w in zip(self.grads, self.ws):
             assert grad.shape == w.shape,\
