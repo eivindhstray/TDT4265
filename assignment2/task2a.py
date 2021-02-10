@@ -19,8 +19,7 @@ def pre_process_images(X: np.ndarray):
     std = np.std(X)
 
     X = (X-mean)/std
-
-
+    
     X = np.hstack((X, np.ones((X.shape[0], 1))))
 
     return X
