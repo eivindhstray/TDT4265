@@ -96,7 +96,7 @@ class SoftmaxModel:
         
         z = layer_output.dot(self.ws[0])
         layer_output = 1/(1+np.exp(-z))
-        self.zs.append(layer_output)
+        self.zs.append(z)
         self.activations.append(layer_output)
         z = layer_output.dot(self.ws[1])
         self.zs.append(z)
@@ -122,16 +122,17 @@ class SoftmaxModel:
         # For example, self.grads[0] will be the gradient for the first hidden layer
         self.grads = [np.zeros_like(weight) for weight in self.ws]
 
+        N = X.shape[0]
+
         diff = -(targets-outputs)
-        delta_1 = self.activations[-2].T@diff
-        self.grads[-1] = delta_1
+        delta_1 = 1/N*(self.activations[0].T@diff)
+        self.grads[1] = delta_1
 
         sigmoid = lambda a : 1/(1+np.exp(-a))
         sigmoid_prime = lambda b : sigmoid(b)*(1-sigmoid(b))
-        print(delta_1.shape)
-        print(sigmoid_prime(self.zs[0]).shape)
-        print(self.activations[0].shape)
-        delta_0 = (self.activations[0].T@sigmoid_prime(self.zs[0]))@delta_1
+
+        delta_0 =X.T@sigmoid_prime(self.zs[1])@delta_1.T
+        print(delta_0.shape)
         self.grads[0] = delta_0
 
         '''
