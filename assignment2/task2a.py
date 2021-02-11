@@ -88,13 +88,14 @@ class SoftmaxModel:
         # TODO implement this function (Task 2b)
         # HINT: For peforming the backward pass, you can save intermediate activations in varialbes in the forward pass.
         # such as self.hidden_layer_ouput = ...
-        self.hidden_layer_outputs = []
-        layer_outputs = X
+        self.layers_a = []
+        layer_output = X
         for weights in self.ws:
-            z = layer_outputs.dot(weights)
-            layer_outputs = 1/(1+np.exp(-z))
-            self.hidden_layer_outputs.append(layer_outputs)
-        return np.exp(z)/np.transpose(np.array([np.sum(np.exp(z),axis=1)]))
+            z = layer_output.dot(weights)
+            layer_output = 1/(1+np.exp(-z))
+            self.layers_a.append(layer_output)
+        self.layers_a[-1] = np.exp(z)/np.transpose(np.array([np.sum(np.exp(z),axis=1)]))
+        return self.layers_a[-1]
 
     def backward(self, X: np.ndarray, outputs: np.ndarray,
                  targets: np.ndarray) -> None:
@@ -108,16 +109,15 @@ class SoftmaxModel:
         """
         # TODO implement this function (Task 2b)
 
-
         assert targets.shape == outputs.shape,\
             f"Output shape: {outputs.shape}, targets: {targets.shape}"
         # A list of gradients.
         # For example, self.grads[0] will be the gradient for the first hidden layer
-        self.grads = []
+        self.grads = np.array()
         
-        layers = self.hidden_layer_outputs
+        
 
-        
+
         
 
 
