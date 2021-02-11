@@ -68,7 +68,7 @@ class SoftmaxModel:
 
         # Initialize the weights
         self.ws = []
-        self.hidden_layer_outputs = []
+
         prev = self.I
         for size in self.neurons_per_layer:
             w_shape = (prev, size)
@@ -88,14 +88,21 @@ class SoftmaxModel:
         # TODO implement this function (Task 2b)
         # HINT: For peforming the backward pass, you can save intermediate activations in varialbes in the forward pass.
         # such as self.hidden_layer_ouput = ...
-        self.layers_a = []
+        self.zs= []
+        self.activations = [X]
+
         layer_output = X
-        for weights in self.ws:
-            z = layer_output.dot(weights)
-            layer_output = 1/(1+np.exp(-z))
-            self.layers_a.append(layer_output)
-        self.layers_a[-1] = np.exp(z)/np.transpose(np.array([np.sum(np.exp(z),axis=1)]))
-        return self.layers_a[-1]
+
+        
+        z = layer_output.dot(self.ws[0])
+        layer_output = 1/(1+np.exp(-z))
+        self.zs.append(layer_output)
+        self.activations.append(layer_output)
+        z = layer_output.dot(self.ws[1])
+        self.zs.append(z)
+        self.activations.append(np.exp(z)/np.transpose(np.array([np.sum(np.exp(z),axis=1)])))
+
+        return np.exp(z)/np.transpose(np.array([np.sum(np.exp(z),axis=1)]))
 
     def backward(self, X: np.ndarray, outputs: np.ndarray,
                  targets: np.ndarray) -> None:
@@ -113,19 +120,33 @@ class SoftmaxModel:
             f"Output shape: {outputs.shape}, targets: {targets.shape}"
         # A list of gradients.
         # For example, self.grads[0] will be the gradient for the first hidden layer
-        self.grads = np.array()
+        self.grads = [np.zeros_like(weight) for weight in self.ws]
+
+        diff = -(targets-outputs)
+        delta_1 = self.activations[-2].T@diff
+        self.grads[-1] = delta_1
+
+        sigmoid = lambda a : 1/(1+np.exp(-a))
+        sigmoid_prime = lambda b : sigmoid(b)*(1-sigmoid(b))
+        print(delta_1.shape)
+        print(sigmoid_prime(self.zs[0]).shape)
+        print(self.activations[0].shape)
+        delta_0 = (self.activations[0].T@sigmoid_prime(self.zs[0]))@delta_1
+        self.grads[0] = delta_0
+
+        '''
+        for i in range(1,len(self.ws)):
+            z = self.zs[-i]
+            sp = sigmoid_prime(z)
+            delta = 
+            self.grads.append(delta)
         
-        
-
-
-        
-
-
-        
-
+        print(self.grads)
         for grad, w in zip(self.grads, self.ws):
             assert grad.shape == w.shape,\
                 f"Expected the same shape. Grad shape: {grad.shape}, w: {w.shape}."
+        '''
+
 
     def zero_grad(self) -> None:
         self.grads = [None for i in range(len(self.ws))]
