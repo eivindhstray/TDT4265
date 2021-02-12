@@ -59,7 +59,6 @@ class SoftmaxModel:
         # Define number of input nodes
         self.I = 785
         self.use_improved_sigmoid = use_improved_sigmoid
-        self.alpha = 0.001
 
         # Define number of output nodes
         # neurons_per_layer = [64, 10] indicates that we will have two layers:
@@ -73,7 +72,7 @@ class SoftmaxModel:
         for size in self.neurons_per_layer:
             w_shape = (prev, size)
             print("Initializing weight to shape:", w_shape)
-            w = np.zeros(w_shape)
+            w = np.random.normal(-1,1,w_shape)
             self.ws.append(w)
             prev = size
         self.grads = [None for i in range(len(self.ws))]
@@ -94,16 +93,15 @@ class SoftmaxModel:
         layer_output = X
 
         
-        z = layer_output.dot(self.ws[0])
-        layer_output = 1/(1+np.exp(-z))
-        self.zs.append(z)
-        self.activations.append(layer_output)
-        z = layer_output.dot(self.ws[1])
-        layer_output = 1/(1+np.exp(-z))
-        self.zs.append(z)
-        self.activations.append(layer_output)
+        for weights in self.ws:
+            z = layer_output.dot(weights)
+            layer_output = 1/(1+np.exp(-z))
+            self.zs.append(z)
+            self.activations.append(layer_output)
 
-        return np.exp(z)/np.transpose(np.array([np.sum(np.exp(z),axis=1)]))
+        softmax_layer = np.exp(z)/np.transpose(np.array([np.sum(np.exp(z),axis=1)]))
+
+        return softmax_layer
 
     def backward(self, X: np.ndarray, outputs: np.ndarray,
                  targets: np.ndarray) -> None:
@@ -121,7 +119,7 @@ class SoftmaxModel:
             f"Output shape: {outputs.shape}, targets: {targets.shape}"
         # A list of gradients.
         # For example, self.grads[0] will be the gradient for the first hidden layer
-        self.grads = np.array([np.zeros_like(weight) for weight in self.ws])
+        self.grads = [np.zeros_like(weight) for weight in self.ws]
 
         N = X.shape[0]
 
@@ -134,7 +132,7 @@ class SoftmaxModel:
         delta_1 = 1/N*(self.activations[1].T@diff)
         self.grads[-1] = delta_1
 
-        for layer in range(1,self.grads.shape[0]):
+        for layer in range(1,len(self.grads)):
             sp = sigmoid_prime(self.zs[-layer+1])
             delta_layer = sp*(diff@self.ws[-layer].T)
 
