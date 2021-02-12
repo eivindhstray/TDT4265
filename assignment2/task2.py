@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from task2a import cross_entropy_loss, SoftmaxModel, one_hot_encode, pre_process_images
 from trainer import BaseTrainer
 np.random.seed(0)
+import tqdm as tqdm
 
 
 def calculate_accuracy(X: np.ndarray, targets: np.ndarray, model: SoftmaxModel) -> float:
@@ -16,7 +17,10 @@ def calculate_accuracy(X: np.ndarray, targets: np.ndarray, model: SoftmaxModel) 
         Accuracy (float)
     """
     # TODO: Implement this function (copy from last assignment)
-    accuracy = 0
+    y_hat = np.array(model.forward(X))
+    y_predicted_position = np.argmax(y_hat,axis=1)
+    y_position = np.argmax(targets,axis = 1) 
+    accuracy = np.count_nonzero(y_position == y_predicted_position)/X.shape[0]
     return accuracy
 
 
@@ -48,9 +52,12 @@ class SoftmaxTrainer(BaseTrainer):
         """
         # TODO: Implement this function (task 2c)
 
-        loss = 0
 
-        logits = self.model.forward(X_batch)
+        logits = model.forward(X_batch)
+
+        model.backward(X_batch,logits,Y_batch)
+
+        model.ws = model.ws - model.alpha*model.grads
 
         loss = cross_entropy_loss(Y_batch, logits)  # sol
 
@@ -122,7 +129,7 @@ if __name__ == "__main__":
     # Plot loss for first model (task 2c)
     plt.figure(figsize=(20, 12))
     plt.subplot(1, 2, 1)
-    plt.ylim([0., .5])
+    #plt.ylim([0., .5])
     utils.plot_loss(train_history["loss"],
                     "Training Loss", npoints_to_average=10)
     utils.plot_loss(val_history["loss"], "Validation Loss")
@@ -131,7 +138,7 @@ if __name__ == "__main__":
     plt.ylabel("Cross Entropy Loss - Average")
     # Plot accuracy
     plt.subplot(1, 2, 2)
-    plt.ylim([0.90, .99])
+    #plt.ylim([0.90, .99])
     utils.plot_loss(train_history["accuracy"], "Training Accuracy")
     utils.plot_loss(val_history["accuracy"], "Validation Accuracy")
     plt.xlabel("Number of Training Steps")

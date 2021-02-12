@@ -3,7 +3,6 @@ import utils
 import typing
 np.random.seed(1)
 
-
 def pre_process_images(X: np.ndarray):
     """
     Args:
@@ -60,6 +59,7 @@ class SoftmaxModel:
         # Define number of input nodes
         self.I = 785
         self.use_improved_sigmoid = use_improved_sigmoid
+        self.alpha = 0.001
 
         # Define number of output nodes
         # neurons_per_layer = [64, 10] indicates that we will have two layers:
@@ -99,8 +99,9 @@ class SoftmaxModel:
         self.zs.append(z)
         self.activations.append(layer_output)
         z = layer_output.dot(self.ws[1])
+        layer_output = 1/(1+np.exp(-z))
         self.zs.append(z)
-        self.activations.append(np.exp(z)/np.transpose(np.array([np.sum(np.exp(z),axis=1)])))
+        self.activations.append(layer_output)
 
         return np.exp(z)/np.transpose(np.array([np.sum(np.exp(z),axis=1)]))
 
@@ -120,21 +121,34 @@ class SoftmaxModel:
             f"Output shape: {outputs.shape}, targets: {targets.shape}"
         # A list of gradients.
         # For example, self.grads[0] will be the gradient for the first hidden layer
-        self.grads = [np.zeros_like(weight) for weight in self.ws]
+        self.grads = np.array([np.zeros_like(weight) for weight in self.ws])
 
         N = X.shape[0]
 
-        diff = -(targets-outputs)
-        delta_1 = 1/N*(self.activations[0].T@diff)
-        self.grads[1] = delta_1
-
+        diff = -(targets-outputs) 
+        
         sigmoid = lambda a : 1/(1+np.exp(-a))
         sigmoid_prime = lambda b : sigmoid(b)*(1-sigmoid(b))
 
-        delta_0 =X.T@sigmoid_prime(self.zs[1])@delta_1.T
-        print(delta_0.shape)
-        self.grads[0] = delta_0
 
+        delta_1 = 1/N*(self.activations[1].T@diff)
+        self.grads[-1] = delta_1
+
+        for layer in range(1,self.grads.shape[0]):
+            sp = sigmoid_prime(self.zs[-layer+1])
+            delta_layer = sp*(diff@self.ws[-layer].T)
+
+            delta_layer = (1/N)*(X.T@delta_layer)
+            self.grads[-layer-1] = delta_layer
+        '''
+        sp = sigmoid_prime(self.zs[0])
+        delta_0 = sp*(diff@self.ws[1].T)
+
+        delta_0 = (1/N)*(X.T@delta_0)
+
+
+        self.grads[0] = delta_0
+        '''
         '''
         for i in range(1,len(self.ws)):
             z = self.zs[-i]
@@ -143,10 +157,11 @@ class SoftmaxModel:
             self.grads.append(delta)
         
         print(self.grads)
+        '''
         for grad, w in zip(self.grads, self.ws):
             assert grad.shape == w.shape,\
                 f"Expected the same shape. Grad shape: {grad.shape}, w: {w.shape}."
-        '''
+        
 
 
     def zero_grad(self) -> None:
@@ -177,8 +192,10 @@ def gradient_approximation_test(
         Details about this test is given in the appendix in the assignment.
     """
     epsilon = 1e-3
-    for layer_idx, w in enumerate(model.ws):
+    for layer_idx, w in (enumerate(model.ws)):
+        print("layer idx")
         for i in range(w.shape[0]):
+            print(i," ", w.shape[0])
             for j in range(w.shape[1]):
                 orig = model.ws[layer_idx][i, j].copy()
                 model.ws[layer_idx][i, j] = orig + epsilon
@@ -194,6 +211,7 @@ def gradient_approximation_test(
                 model.backward(X, logits, Y)
                 difference = gradient_approximation - \
                     model.grads[layer_idx][i, j]
+            
                 assert abs(difference) <= epsilon**2,\
                     f"Calculated gradient is incorrect. " \
                     f"Layer IDX = {layer_idx}, i={i}, j={j}.\n" \
@@ -201,7 +219,7 @@ def gradient_approximation_test(
                     f"If this test fails there could be errors in your cross entropy loss function, " \
                     f"forward function or backward function"
 
-
+        
 if __name__ == "__main__":
     # Simple test on one-hot encoding
     Y = np.zeros((1, 1), dtype=int)
