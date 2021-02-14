@@ -62,7 +62,7 @@ if __name__ == "__main__":
         train_history_no_shuffle["loss"], "Task 2 Model - No dataset shuffling", npoints_to_average=10)
     plt.ylim([0, .4])
     plt.subplot(1, 2, 2)
-    plt.ylim([0.85, .95])
+    plt.ylim([0.89, .95])
     utils.plot_loss(val_history["accuracy"], "Task 2 Model")
     utils.plot_loss(
         val_history_no_shuffle["accuracy"], "Task 2 Model - No Dataset Shuffling")

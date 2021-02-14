@@ -100,7 +100,10 @@ class SoftmaxModel:
         
         for weights in self.ws:
             z = layer_output.dot(weights)
-            layer_output = 1/(1+np.exp(-z))
+            if(self.use_improved_sigmoid):
+                layer_output = np.tanh(z) 
+            else:
+                layer_output = 1/(1+np.exp(-z))
             self.zs.append(z)
             self.activations.append(layer_output)
 
@@ -128,27 +131,24 @@ class SoftmaxModel:
 
         N = X.shape[0]
 
-        diff = -(targets-outputs) 
 
 
         if(self.use_improved_sigmoid):
             sigmoid = lambda a: np.tanh(a)
-            sigmoid_prime = lambda b: 1/(1+b**2)
+            sigmoid_prime = lambda b: 1-sigmoid(b)**2
         else:
             sigmoid = lambda a : 1/(1+np.exp(-a))
             sigmoid_prime = lambda b : sigmoid(b)*(1-sigmoid(b))
 
-
-        delta_1 = 1/N*(self.activations[-2].T@diff)
-        self.grads[-1] = delta_1
-
+        dk = -(targets-outputs) 
+        delta_k = 1/N*(self.activations[-2].T@dk)
+        self.grads[-1] = delta_k
+        
         for layer in range(1,len(self.grads)):
-
             sp = sigmoid_prime(self.zs[-layer+1])
-            delta_layer = sp*(diff@self.ws[-layer].T)
-
-            delta_layer = (1/N)*(self.activations[-layer+1].T@delta_layer)
-            self.grads[-layer-1] = delta_layer
+            dj = sp*(dk@self.ws[-layer].T)
+            grad_j = (1/N)*(self.activations[-layer+1].T@dj)
+            self.grads[-layer-1] = grad_j
         '''
         sp = sigmoid_prime(self.zs[0])
         delta_0 = sp*(diff@self.ws[1].T)
@@ -243,7 +243,7 @@ if __name__ == "__main__":
     assert X_train.shape[1] == 785,\
         f"Expected X_train to have 785 elements per image. Shape was: {X_train.shape}"
 
-    neurons_per_layer = [64, 10]
+    neurons_per_layer = [64,10]
     use_improved_sigmoid = False
     use_improved_weight_init = False
     model = SoftmaxModel(

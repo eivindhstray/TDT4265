@@ -53,14 +53,20 @@ class SoftmaxTrainer(BaseTrainer):
         # TODO: Implement this function (task 2c)
 
         model = self.model
-        
+
         logits = model.forward(X_batch)
 
         model.backward(X_batch,logits,Y_batch)
 
-        for i,grad in enumerate(model.grads):
-            model.ws[i] -= self.learning_rate*grad
-
+        if (self.use_momentum):
+           for i,grad in enumerate(model.grads):
+                self.previous_grads[i] = self.learning_rate*grad + self.momentum_gamma*self.previous_grads[i]
+                model.ws[i] -= self.previous_grads[i]
+                
+        else:
+            for i,grad in enumerate(model.grads):
+                model.ws[i] -= self.learning_rate*grad
+                
         loss = cross_entropy_loss(Y_batch, logits)  # sol
 
         return loss
