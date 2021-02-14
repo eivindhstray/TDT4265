@@ -139,34 +139,23 @@ class SoftmaxModel:
         else:
             sigmoid = lambda a : 1/(1+np.exp(-a))
             sigmoid_prime = lambda b : sigmoid(b)*(1-sigmoid(b))
-
+        
+        '''
+        The last layer is computed by itself.
+        '''
         dk = -(targets-outputs) 
         delta_k = 1/N*(self.activations[-2].T@dk)
         self.grads[-1] = delta_k
-        
+        dj = dk
+        '''
+        If there are any hidden layers, these will be computed by the loop below.
+        '''
         for layer in range(1,len(self.grads)):
             sp = sigmoid_prime(self.zs[-layer+1])
-            dj = sp*(dk@self.ws[-layer].T)
+            dj = sp*(dj@self.ws[-layer].T)
             grad_j = (1/N)*(self.activations[-layer+1].T@dj)
             self.grads[-layer-1] = grad_j
-        '''
-        sp = sigmoid_prime(self.zs[0])
-        delta_0 = sp*(diff@self.ws[1].T)
-
-        delta_0 = (1/N)*(X.T@delta_0)
-
-
-        self.grads[0] = delta_0
-        '''
-        '''
-        for i in range(1,len(self.ws)):
-            z = self.zs[-i]
-            sp = sigmoid_prime(z)
-            delta = 
-            self.grads.append(delta)
-        
-        print(self.grads)
-        '''
+    
         for grad, w in zip(self.grads, self.ws):
             assert grad.shape == w.shape,\
                 f"Expected the same shape. Grad shape: {grad.shape}, w: {w.shape}."

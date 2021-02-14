@@ -66,7 +66,7 @@ class SoftmaxTrainer(BaseTrainer):
         else:
             for i,grad in enumerate(model.grads):
                 model.ws[i] -= self.learning_rate*grad
-                
+
         loss = cross_entropy_loss(Y_batch, logits)  # sol
 
         return loss
@@ -104,8 +104,8 @@ if __name__ == "__main__":
     shuffle_data = True
 
     # Settings for task 3. Keep all to false for task 2.
-    use_improved_sigmoid = True
-    use_improved_weight_init = True
+    use_improved_sigmoid = False
+    use_improved_weight_init = False
     use_momentum = False
 
     # Load dataset
