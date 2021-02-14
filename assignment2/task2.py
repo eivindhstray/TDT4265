@@ -52,7 +52,8 @@ class SoftmaxTrainer(BaseTrainer):
         """
         # TODO: Implement this function (task 2c)
 
-
+        model = self.model
+        
         logits = model.forward(X_batch)
 
         model.backward(X_batch,logits,Y_batch)
