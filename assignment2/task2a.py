@@ -136,7 +136,7 @@ class SoftmaxModel:
             sp = sigmoid_prime(self.zs[-layer+1])
             delta_layer = sp*(diff@self.ws[-layer].T)
 
-            delta_layer = (1/N)*(X.T@delta_layer)
+            delta_layer = (1/N)*(self.activations[-layer+1].T@delta_layer)
             self.grads[-layer-1] = delta_layer
         '''
         sp = sigmoid_prime(self.zs[0])
