@@ -72,7 +72,12 @@ class SoftmaxModel:
         for size in self.neurons_per_layer:
             w_shape = (prev, size)
             print("Initializing weight to shape:", w_shape)
-            w = np.random.normal(-1,1,w_shape)
+            if (self.use_improved_sigmoid):
+                fan_in = 1/np.sqrt(prev)
+                mean = 0
+                w = np.random.normal(mean, fan_in, w_shape)
+            else:
+                w = np.random.normal(-1,1,w_shape)
             self.ws.append(w)
             prev = size
         self.grads = [None for i in range(len(self.ws))]
@@ -124,15 +129,21 @@ class SoftmaxModel:
         N = X.shape[0]
 
         diff = -(targets-outputs) 
-        
-        sigmoid = lambda a : 1/(1+np.exp(-a))
-        sigmoid_prime = lambda b : sigmoid(b)*(1-sigmoid(b))
 
 
-        delta_1 = 1/N*(self.activations[1].T@diff)
+        if(self.use_improved_sigmoid):
+            sigmoid = lambda a: np.tanh(a)
+            sigmoid_prime = lambda b: 1/(1+b**2)
+        else:
+            sigmoid = lambda a : 1/(1+np.exp(-a))
+            sigmoid_prime = lambda b : sigmoid(b)*(1-sigmoid(b))
+
+
+        delta_1 = 1/N*(self.activations[-2].T@diff)
         self.grads[-1] = delta_1
 
         for layer in range(1,len(self.grads)):
+
             sp = sigmoid_prime(self.zs[-layer+1])
             delta_layer = sp*(diff@self.ws[-layer].T)
 

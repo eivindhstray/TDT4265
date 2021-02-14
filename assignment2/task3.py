@@ -2,7 +2,8 @@ import utils
 import matplotlib.pyplot as plt
 from task2a import pre_process_images, one_hot_encode, SoftmaxModel
 from task2 import SoftmaxTrainer
-
+import numpy as np
+np.random.seed(0)
 
 if __name__ == "__main__":
     # hyperparameters DO NOT CHANGE IF NOT SPECIFIED IN ASSIGNMENT TEXT
@@ -14,7 +15,7 @@ if __name__ == "__main__":
     shuffle_data = True
 
     use_improved_sigmoid = False
-    use_improved_weight_init = False
+    use_improved_weight_init = True
     use_momentum = False
 
     # Load dataset
@@ -37,6 +38,7 @@ if __name__ == "__main__":
 
     # Example created in assignment text - Comparing with and without shuffling.
     # YOU CAN DELETE EVERYTHING BELOW!
+    '''
     shuffle_data = False
     model_no_shuffle = SoftmaxModel(
         neurons_per_layer,
@@ -65,3 +67,4 @@ if __name__ == "__main__":
     plt.ylabel("Validation Accuracy")
     plt.legend()
     plt.show()
+    '''
