@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     #Task 3 below
 
-    '''
+    
     
     model = SoftmaxModel(
         neurons_per_layer,
@@ -77,6 +77,7 @@ if __name__ == "__main__":
     train_history_final, val_history_final= trainer_shuffle.train(
         num_epochs)
 
+    plt.figure(figsize=(20, 12))
     plt.subplot(1, 2, 1)
     utils.plot_loss(train_history["loss"],
                     "Improved sigmoid", npoints_to_average=10)
@@ -102,7 +103,7 @@ if __name__ == "__main__":
     plt.show()
     
     
-    '''
+    
     
     #############################
     #Task 4 a and b below        #
@@ -111,6 +112,7 @@ if __name__ == "__main__":
     use_improved_sigmoid = True
     use_improved_weight_init = True
     use_momentum = True
+
 
 
 
@@ -155,7 +157,8 @@ if __name__ == "__main__":
     )
     train_history_64, val_history_64= trainer_shuffle.train(
         num_epochs)
-    
+
+    plt.figure(figsize=(20, 12))
     plt.subplot(1, 2, 1)
     plt.ylim([0.00, 0.4])
     utils.plot_loss(
