@@ -103,7 +103,7 @@ if __name__ == "__main__":
     
     
     '''
-    '''
+    
     #############################
     #Task 4 a and b below        #
     #############################
@@ -171,22 +171,22 @@ if __name__ == "__main__":
     plt.subplot(1, 2, 2)
     plt.ylim([0.89, .99])
     utils.plot_loss(
-        val_history_128["accuracy"], "32 hidden units")
+        val_history_128["accuracy"], "128 hidden units")
     utils.plot_loss(
         val_history_64["accuracy"], "64 hidden units")
     utils.plot_loss(
-        val_history_32["accuracy"], "128 hidden units")
+        val_history_32["accuracy"], "32 hidden units")
     plt.ylabel("Validation Accuracy")
     plt.legend()
     plt.savefig("task4_a_b.png")
     plt.show()
-    '''
+
     
     
     ###################
     # Task 4e)        #
     ###################
-
+    '''
     learning_rate_momentum = 0.02
     neurons_per_layer = [64,64,64,64,64,64,64,64,64,64,10]
     model_64_layers = SoftmaxModel(
@@ -217,5 +217,6 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig("task4_e.png")
     plt.show()
+    '''
 
     
