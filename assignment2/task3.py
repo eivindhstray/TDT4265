@@ -27,6 +27,7 @@ if __name__ == "__main__":
     Y_train = one_hot_encode(Y_train, 10)
     Y_val = one_hot_encode(Y_val, 10)
 
+    '''
     model = SoftmaxModel(
         neurons_per_layer,
         use_improved_sigmoid,
@@ -37,10 +38,12 @@ if __name__ == "__main__":
         X_train, Y_train, X_val, Y_val,
     )
     train_history, val_history = trainer.train(num_epochs)
-
+    '''
     # Example created in assignment text - Comparing with and without shuffling.
     # YOU CAN DELETE EVERYTHING BELOW!
-    
+
+    #Task 3 below
+    '''
     use_improved_weight_init = True
     model_no_shuffle = SoftmaxModel(
         neurons_per_layer,
@@ -55,20 +58,121 @@ if __name__ == "__main__":
         num_epochs)
     shuffle_data = True
 
+
+    
+    use_momentum = True
+    learning_rate_momentum = 0.02
+    model_no_shuffle = SoftmaxModel(
+        neurons_per_layer,
+        use_improved_sigmoid,
+        use_improved_weight_init)
+    trainer_shuffle = SoftmaxTrainer(
+        momentum_gamma, use_momentum,
+        model_no_shuffle, learning_rate_momentum, batch_size, shuffle_data,
+        X_train, Y_train, X_val, Y_val,
+    )
+    train_history_final, val_history_final= trainer_shuffle.train(
+        num_epochs)
+
     plt.subplot(1, 2, 1)
     utils.plot_loss(train_history["loss"],
                     "Improved sigmoid", npoints_to_average=10)
     utils.plot_loss(
         train_history_weights["loss"], "Improved weights", npoints_to_average=10)
+    utils.plot_loss(
+        train_history_final["loss"], "Using momentum", npoints_to_average=10)
+    plt.ylabel("Validation Loss")
     plt.ylim([0, .4]) 
+    plt.legend()
     plt.subplot(1, 2, 2)
     plt.ylim([0.89, .99])
-    utils.plot_loss(val_history["accuracy"], "Improved sigmoid")
+    utils.plot_loss(
+        val_history["accuracy"], "Improved sigmoid")
     utils.plot_loss(
         val_history_weights["accuracy"], "Improved weights")
+    
+    utils.plot_loss(
+        val_history_final["accuracy"], "Using momentum")
     plt.ylabel("Validation Accuracy")
     plt.legend()
     plt.savefig("task3_2.png")
     plt.show()
+    '''
+
+ 
+    ######################
+    #Task 4 below        #
+    ######################
+    #Model from task 3
+    use_improved_sigmoid = True
+    use_improved_weight_init = True
+    use_momentum = True
+
+
+
+    learning_rate_momentum = 0.02
+    neurons_per_layer = [32,10]
+    model_32 = SoftmaxModel(
+        neurons_per_layer,
+        use_improved_sigmoid,
+        use_improved_weight_init)
+    trainer_shuffle = SoftmaxTrainer(
+        momentum_gamma, use_momentum,
+        model_32, learning_rate_momentum, batch_size, shuffle_data,
+        X_train, Y_train, X_val, Y_val,
+    )
+    train_history_32, val_history_32= trainer_shuffle.train(
+        num_epochs)
+        
+
+    neurons_per_layer = [128,10]
+    model_128 = SoftmaxModel(
+        neurons_per_layer,
+        use_improved_sigmoid,
+        use_improved_weight_init)
+    trainer_shuffle = SoftmaxTrainer(
+        momentum_gamma, use_momentum,
+        model_128, learning_rate_momentum, batch_size, shuffle_data,
+        X_train, Y_train, X_val, Y_val,
+    )
+    train_history_128, val_history_128= trainer_shuffle.train(
+        num_epochs)
+
     
+    neurons_per_layer = [64,10]
+    model_64 = SoftmaxModel(
+        neurons_per_layer,
+        use_improved_sigmoid,
+        use_improved_weight_init)
+    trainer_shuffle = SoftmaxTrainer(
+        momentum_gamma, use_momentum,
+        model_64, learning_rate_momentum, batch_size, shuffle_data,
+        X_train, Y_train, X_val, Y_val,
+    )
+    train_history_64, val_history_64= trainer_shuffle.train(
+        num_epochs)
     
+    plt.subplot(1, 2, 1)
+    plt.ylim([0.00, 0.4])
+    utils.plot_loss(
+        train_history_32["loss"], "32 hidden units", npoints_to_average=10)
+    utils.plot_loss(
+        train_history_128["loss"], "128 hidden units", npoints_to_average=10)
+    utils.plot_loss(
+        train_history_64["loss"], "64 hidden units", npoints_to_average=10)
+    plt.ylabel("Training Loss")
+    
+    plt.legend()
+
+    plt.subplot(1, 2, 2)
+    plt.ylim([0.89, .99])
+    utils.plot_loss(
+        val_history_128["accuracy"], "32 hidden units")
+    utils.plot_loss(
+        val_history_64["accuracy"], "64 hidden units")
+    utils.plot_loss(
+        val_history_32["accuracy"], "128 hidden units")
+    plt.ylabel("Validation Accuracy")
+    plt.legend()
+    plt.savefig("task4_1_2.png")
+    plt.show()
