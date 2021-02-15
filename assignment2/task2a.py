@@ -135,8 +135,8 @@ class SoftmaxModel:
 
 
         if(self.use_improved_sigmoid):
-            sigmoid = lambda a: np.tanh(a)
-            sigmoid_prime = lambda b: 1-sigmoid(b)**2
+            sigmoid = lambda a: 1.7159*np.tanh((2/3)*a)
+            sigmoid_prime = lambda b: 1.7159*(2/3)*(1-sigmoid((2/3)*b)**2)
         else:
             sigmoid = lambda a : 1/(1+np.exp(-a))
             sigmoid_prime = lambda b : sigmoid(b)*(1-sigmoid(b))
