@@ -41,7 +41,7 @@ if __name__ == "__main__":
     # Example created in assignment text - Comparing with and without shuffling.
     # YOU CAN DELETE EVERYTHING BELOW!
     
-    shuffle_data = False
+    use_improved_weight_init = True
     model_no_shuffle = SoftmaxModel(
         neurons_per_layer,
         use_improved_sigmoid,
@@ -62,8 +62,8 @@ if __name__ == "__main__":
         train_history_weights["loss"], "Improved weights", npoints_to_average=10)
     plt.ylim([0, .4]) 
     plt.subplot(1, 2, 2)
-    plt.ylim([0.89, .95])
-    utils.plot_loss(val_history["accuracy"], "Improves sigmoid")
+    plt.ylim([0.89, .99])
+    utils.plot_loss(val_history["accuracy"], "Improved sigmoid")
     utils.plot_loss(
         val_history_weights["accuracy"], "Improved weights")
     plt.ylabel("Validation Accuracy")
