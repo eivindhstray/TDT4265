@@ -27,6 +27,11 @@ if __name__ == "__main__":
     Y_train = one_hot_encode(Y_train, 10)
     Y_val = one_hot_encode(Y_val, 10)
 
+    # Example created in assignment text - Comparing with and without shuffling.
+    # YOU CAN DELETE EVERYTHING BELOW!
+
+    #Task 3 below
+
     '''
     
     model = SoftmaxModel(
@@ -40,10 +45,7 @@ if __name__ == "__main__":
     )
     train_history, val_history = trainer.train(num_epochs)
     
-    # Example created in assignment text - Comparing with and without shuffling.
-    # YOU CAN DELETE EVERYTHING BELOW!
 
-    #Task 3 below
     
     use_improved_weight_init = True
     model_no_shuffle = SoftmaxModel(
