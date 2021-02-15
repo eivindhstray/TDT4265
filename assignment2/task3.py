@@ -16,7 +16,7 @@ if __name__ == "__main__":
     momentum_gamma = .9  # Task 3 hyperparameter
     shuffle_data = True
 
-    use_improved_sigmoid = False
+    use_improved_sigmoid = True
     use_improved_weight_init = False
     use_momentum = False
 
@@ -51,23 +51,24 @@ if __name__ == "__main__":
         model_no_shuffle, learning_rate, batch_size, shuffle_data,
         X_train, Y_train, X_val, Y_val,
     )
-    train_history_no_shuffle, val_history_no_shuffle = trainer_shuffle.train(
+    train_history_weights, val_history_weights= trainer_shuffle.train(
         num_epochs)
     shuffle_data = True
 
     plt.subplot(1, 2, 1)
     utils.plot_loss(train_history["loss"],
-                    "Shuffled - model as in task 2", npoints_to_average=10)
+                    "Improved sigmoid", npoints_to_average=10)
     utils.plot_loss(
-        train_history_no_shuffle["loss"], "Unshuffled - model as in task 2", npoints_to_average=10)
+        train_history_weights["loss"], "Improved weights", npoints_to_average=10)
     plt.ylim([0, .4]) 
     plt.subplot(1, 2, 2)
     plt.ylim([0.89, .95])
-    utils.plot_loss(val_history["accuracy"], "Shuffled - model as in task 2")
+    utils.plot_loss(val_history["accuracy"], "Improves sigmoid")
     utils.plot_loss(
-        val_history_no_shuffle["accuracy"], "Unshuffled - model as in task 2")
+        val_history_weights["accuracy"], "Improved weights")
     plt.ylabel("Validation Accuracy")
     plt.legend()
+    plt.savefig("task3_2.png")
     plt.show()
-    plt.savefig("task3.png")
+    
     

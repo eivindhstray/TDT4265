@@ -95,6 +95,10 @@ class BaseTrainer:
                     val_history["loss"][global_step] = val_loss
                     val_history["accuracy"][global_step] = accuracy_val
                     # TODO: Implement early stopping (copy from last assignment)
+                    best_this_epoch = np.min(val_history["loss"][global_step])
+                    if best_this_epoch<best:
+                        best = best_this_epoch
+                    best_arr.append(best_this_epoch)
 
                     if (best not in best_arr[-50:] and len(best_arr) >= 50):
                         return train_history, val_history
