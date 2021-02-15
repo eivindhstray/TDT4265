@@ -16,8 +16,8 @@ if __name__ == "__main__":
     momentum_gamma = .9  # Task 3 hyperparameter
     shuffle_data = True
 
-    use_improved_sigmoid = True
-    use_improved_weight_init = True
+    use_improved_sigmoid = False
+    use_improved_weight_init = False
     use_momentum = False
 
     # Load dataset
@@ -57,16 +57,17 @@ if __name__ == "__main__":
 
     plt.subplot(1, 2, 1)
     utils.plot_loss(train_history["loss"],
-                    "Task 2 Model", npoints_to_average=10)
+                    "Shuffled - model as in task 2", npoints_to_average=10)
     utils.plot_loss(
-        train_history_no_shuffle["loss"], "Task 2 Model - No dataset shuffling", npoints_to_average=10)
-    plt.ylim([0, .4])
+        train_history_no_shuffle["loss"], "Unshuffled - model as in task 2", npoints_to_average=10)
+    plt.ylim([0, .4]) 
     plt.subplot(1, 2, 2)
     plt.ylim([0.89, .95])
-    utils.plot_loss(val_history["accuracy"], "Task 2 Model")
+    utils.plot_loss(val_history["accuracy"], "Shuffled - model as in task 2")
     utils.plot_loss(
-        val_history_no_shuffle["accuracy"], "Task 2 Model - No Dataset Shuffling")
+        val_history_no_shuffle["accuracy"], "Unshuffled - model as in task 2")
     plt.ylabel("Validation Accuracy")
     plt.legend()
     plt.show()
+    plt.savefig("task3.png")
     

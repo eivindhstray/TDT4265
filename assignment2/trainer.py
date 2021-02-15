@@ -76,7 +76,6 @@ class BaseTrainer:
 
 
         global_step = 0
-        stop = False
         best = 1000000000 #Some great number representing infinity
         best_arr = [] #This will hold the best values for each epoch (validation loss)
 
