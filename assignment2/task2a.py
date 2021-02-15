@@ -80,6 +80,7 @@ class SoftmaxModel:
             else:
                 w = np.random.uniform(-1,1,w_shape)
             self.ws.append(w)
+            
             prev = size
         self.grads = [None for i in range(len(self.ws))]
 
@@ -129,6 +130,7 @@ class SoftmaxModel:
         # A list of gradients.
         # For example, self.grads[0] will be the gradient for the first hidden layer
         self.grads = [np.zeros_like(weight) for weight in self.ws]
+
 
         N = X.shape[0]
 
