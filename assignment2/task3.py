@@ -29,7 +29,7 @@ if __name__ == "__main__":
     ##########################
     # Shuffled vs unshuffled #
     ##########################
-    '''
+    
     shuffle_data = True
     model = SoftmaxModel(
         neurons_per_layer,
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     plt.ylim([0, .4]) 
     plt.legend()
     plt.subplot(1, 2, 2)
-    plt.ylim([0.89, .99])
+    plt.ylim([0.89, .95])
     utils.plot_loss(
         val_history_shuffled["accuracy"], "Shuffled")
     utils.plot_loss(
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig("task3.png")
     plt.show()
-    '''
+    
     #################
     #Task 3 below   #
     #################
