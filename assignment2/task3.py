@@ -14,9 +14,8 @@ if __name__ == "__main__":
     batch_size = 32
     neurons_per_layer = [64, 10]
     momentum_gamma = .9  # Task 3 hyperparameter
-    shuffle_data = True
 
-    use_improved_sigmoid = True
+    use_improved_sigmoid = False
     use_improved_weight_init = False
     use_momentum = False
 
@@ -27,13 +26,64 @@ if __name__ == "__main__":
     Y_train = one_hot_encode(Y_train, 10)
     Y_val = one_hot_encode(Y_val, 10)
 
-    # Example created in assignment text - Comparing with and without shuffling.
-    # YOU CAN DELETE EVERYTHING BELOW!
-
-    #Task 3 below
-
+    ##########################
+    # Shuffled vs unshuffled #
+    ##########################
     '''
+    shuffle_data = True
+    model = SoftmaxModel(
+        neurons_per_layer,
+        use_improved_sigmoid,
+        use_improved_weight_init)
+    trainer = SoftmaxTrainer(
+        momentum_gamma, use_momentum,
+        model, learning_rate, batch_size, shuffle_data,
+        X_train, Y_train, X_val, Y_val,
+    )
+    train_history_shuffled, val_history_shuffled = trainer.train(num_epochs)
     
+
+    shuffle_data = False
+    model_no_shuffle = SoftmaxModel(
+        neurons_per_layer,
+        use_improved_sigmoid,
+        use_improved_weight_init)
+    trainer_shuffle = SoftmaxTrainer(
+        momentum_gamma, use_momentum,
+        model_no_shuffle, learning_rate, batch_size, shuffle_data,
+        X_train, Y_train, X_val, Y_val,
+    )
+    train_history_unshuffled, val_history_unshuffled= trainer_shuffle.train(
+        num_epochs)
+
+    plt.figure(figsize=(20, 12))
+    plt.subplot(1, 2, 1)
+    utils.plot_loss(train_history_shuffled["loss"],
+                    "Shuffled", npoints_to_average=10)
+    utils.plot_loss(
+        train_history_unshuffled["loss"], "Unshuffled", npoints_to_average=10)
+    utils.plot_loss(val_history_shuffled["loss"],"Validation Loss Shuffled")
+    utils.plot_loss(val_history_unshuffled["loss"],"Validation Loss Unshuffled")
+    plt.ylabel("Loss")
+    plt.ylim([0, .4]) 
+    plt.legend()
+    plt.subplot(1, 2, 2)
+    plt.ylim([0.89, .99])
+    utils.plot_loss(
+        val_history_shuffled["accuracy"], "Shuffled")
+    utils.plot_loss(
+        val_history_unshuffled["accuracy"], "Unshuffled")
+    plt.ylabel("Validation Accuracy")
+    plt.legend()
+    plt.savefig("task3.png")
+    plt.show()
+    '''
+    #################
+    #Task 3 below   #
+    #################
+    '''
+    shuffle_data = True
+    use_improved_sigmoid= True
     model = SoftmaxModel(
         neurons_per_layer,
         use_improved_sigmoid,
@@ -82,10 +132,13 @@ if __name__ == "__main__":
     utils.plot_loss(train_history["loss"],
                     "Improved sigmoid", npoints_to_average=10)
     utils.plot_loss(
-        train_history_weights["loss"], "Improved weights", npoints_to_average=10)
+        train_history_weights["loss"], "Improved weights - training", npoints_to_average=10)
     utils.plot_loss(
-        train_history_final["loss"], "Using momentum", npoints_to_average=10)
-    plt.ylabel("Validation Loss")
+        train_history_final["loss"], "Using momentum - training", npoints_to_average=10)
+    utils.plot_loss(val_history_final["loss"],"Validation Loss Using Momentum")
+    utils.plot_loss(val_history_weights["loss"],"Validation Loss Using Improved weights")
+    utils.plot_loss(val_history["loss"],"Validation Loss Using Improved Sigmoid")
+    plt.ylabel("Cross entropy Loss")
     plt.ylim([0, .4]) 
     plt.legend()
     plt.subplot(1, 2, 2)
@@ -103,11 +156,12 @@ if __name__ == "__main__":
     plt.show()
     
     
+    '''
+    '''
     
-    
-    #############################
+    ##############################
     #Task 4 a and b below        #
-    #############################
+    ##############################
     #Model from task 3
     use_improved_sigmoid = True
     use_improved_weight_init = True
@@ -185,11 +239,14 @@ if __name__ == "__main__":
     plt.show()
 
     
-    
+    '''
     ###################
     # Task 4e)        #
     ###################
-    '''
+    shuffle_data = True
+    use_improved_sigmoid = True
+    use_improved_weight_init = True
+    use_momentum = True
     learning_rate_momentum = 0.02
     neurons_per_layer = [64,64,64,64,64,64,64,64,64,64,10]
     model_64_layers = SoftmaxModel(
@@ -202,11 +259,11 @@ if __name__ == "__main__":
         X_train, Y_train, X_val, Y_val,
     )
     train_history_64_layers, val_history_64_layers= trainer_shuffle.train(
-        num_epochs = 30)
+        num_epochs)
 
     plt.figure(figsize=(20, 12))
     plt.subplot(1, 2, 1)
-    #plt.ylim([0.00, 1.00])
+    plt.ylim([0.00, 1.00])
     utils.plot_loss(
         train_history_64_layers["loss"], "10 hidden layers", npoints_to_average=10)
     plt.ylabel("Training Loss")
@@ -216,7 +273,7 @@ if __name__ == "__main__":
     plt.legend()
 
     plt.subplot(1, 2, 2)
-    #plt.ylim([0.50, .99])
+    plt.ylim([0.80, .99])
     utils.plot_loss(
         val_history_64_layers["accuracy"], "10 hidden layers")
     plt.ylabel("Validation Accuracy")
