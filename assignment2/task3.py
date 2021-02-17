@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     #Task 3 below
 
-    
+    '''
     
     model = SoftmaxModel(
         neurons_per_layer,
@@ -204,11 +204,14 @@ if __name__ == "__main__":
     train_history_64_layers, val_history_64_layers= trainer_shuffle.train(
         num_epochs = 30)
 
+    plt.figure(figsize=(20, 12))
     plt.subplot(1, 2, 1)
     #plt.ylim([0.00, 1.00])
     utils.plot_loss(
         train_history_64_layers["loss"], "10 hidden layers", npoints_to_average=10)
     plt.ylabel("Training Loss")
+    utils.plot_loss(val_history_64_layers["loss"],"Validation Loss")
+    plt.ylabel("Validation Loss")
     
     plt.legend()
 
@@ -220,6 +223,6 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig("task4_e.png")
     plt.show()
-    '''
+    
 
     
