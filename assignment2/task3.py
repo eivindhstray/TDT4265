@@ -29,7 +29,7 @@ if __name__ == "__main__":
     ##########################
     # Shuffled vs unshuffled #
     ##########################
-    
+    '''
     shuffle_data = True
     model = SoftmaxModel(
         neurons_per_layer,
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig("task3.png")
     plt.show()
-    
+    '''
     #################
     #Task 3 below   #
     #################
@@ -152,20 +152,21 @@ if __name__ == "__main__":
         val_history_final["accuracy"], "Using momentum")
     plt.ylabel("Validation Accuracy")
     plt.legend()
-    plt.savefig("task3_2.png")
+    plt.savefig("task3_2_momentum(2).png")
     plt.show()
     
     
-    '''
+    
     '''
     
     ##############################
     #Task 4 a and b below        #
     ##############################
     #Model from task 3
+    shuffle_data = True
     use_improved_sigmoid = True
     use_improved_weight_init = True
-    use_momentum = True
+    use_momentum = False
 
 
 
@@ -178,7 +179,7 @@ if __name__ == "__main__":
         use_improved_weight_init)
     trainer_shuffle = SoftmaxTrainer(
         momentum_gamma, use_momentum,
-        model_32, learning_rate_momentum, batch_size, shuffle_data,
+        model_32, learning_rate, batch_size, shuffle_data,
         X_train, Y_train, X_val, Y_val,
     )
     train_history_32, val_history_32= trainer_shuffle.train(
@@ -192,7 +193,7 @@ if __name__ == "__main__":
         use_improved_weight_init)
     trainer_shuffle = SoftmaxTrainer(
         momentum_gamma, use_momentum,
-        model_128, learning_rate_momentum, batch_size, shuffle_data,
+        model_128, learning_rate, batch_size, shuffle_data,
         X_train, Y_train, X_val, Y_val,
     )
     train_history_128, val_history_128= trainer_shuffle.train(
@@ -206,7 +207,7 @@ if __name__ == "__main__":
         use_improved_weight_init)
     trainer_shuffle = SoftmaxTrainer(
         momentum_gamma, use_momentum,
-        model_64, learning_rate_momentum, batch_size, shuffle_data,
+        model_64, learning_rate, batch_size, shuffle_data,
         X_train, Y_train, X_val, Y_val,
     )
     train_history_64, val_history_64= trainer_shuffle.train(
@@ -221,12 +222,15 @@ if __name__ == "__main__":
         train_history_128["loss"], "128 hidden units", npoints_to_average=10)
     utils.plot_loss(
         train_history_64["loss"], "64 hidden units", npoints_to_average=10)
+    utils.plot_loss(val_history_64["loss"], "64 hidden units, validation loss")
+    utils.plot_loss(val_history_128["loss"], "128 hidden units, validation loss")
+    utils.plot_loss(val_history_32["loss"], "32 hidden units, validation loss")
     plt.ylabel("Training Loss")
     
     plt.legend()
 
     plt.subplot(1, 2, 2)
-    plt.ylim([0.89, .99])
+    plt.ylim([0.93, .98])
     utils.plot_loss(
         val_history_128["accuracy"], "128 hidden units")
     utils.plot_loss(
@@ -246,7 +250,7 @@ if __name__ == "__main__":
     shuffle_data = True
     use_improved_sigmoid = True
     use_improved_weight_init = True
-    use_momentum = True
+    use_momentum = False
     learning_rate_momentum = 0.02
     neurons_per_layer = [64,64,64,64,64,64,64,64,64,64,10]
     model_64_layers = SoftmaxModel(
@@ -255,7 +259,7 @@ if __name__ == "__main__":
         use_improved_weight_init)
     trainer_shuffle = SoftmaxTrainer(
         momentum_gamma, use_momentum,
-        model_64_layers, learning_rate_momentum, batch_size, shuffle_data,
+        model_64_layers, learning_rate, batch_size, shuffle_data,
         X_train, Y_train, X_val, Y_val,
     )
     train_history_64_layers, val_history_64_layers= trainer_shuffle.train(
@@ -280,6 +284,6 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig("task4_e.png")
     plt.show()
-    
+    '''
 
     
