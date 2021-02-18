@@ -163,6 +163,7 @@ if __name__ == "__main__":
     #Task 4 a and b below        #
     ##############################
     #Model from task 3
+    '''
     shuffle_data = True
     use_improved_sigmoid = True
     use_improved_weight_init = True
@@ -241,9 +242,47 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig("task4_a_b.png")
     plt.show()
-
-    
     '''
+
+    ################
+    # Task 4d)     #
+    ################
+    
+    neurons_per_layer = [48,48,10]
+    shuffle_data = True
+    use_improved_sigmoid= True
+    use_improved_weight_init = True
+    use_momentum = False
+    model = SoftmaxModel(
+        neurons_per_layer,
+        use_improved_sigmoid,
+        use_improved_weight_init)
+    trainer = SoftmaxTrainer(
+        momentum_gamma, use_momentum,
+        model, learning_rate, batch_size, shuffle_data,
+        X_train, Y_train, X_val, Y_val,
+    )
+    train_history, val_history = trainer.train(num_epochs)
+
+    plt.figure(figsize=(20, 12))
+    plt.subplot(1, 2, 1)
+    utils.plot_loss(train_history["loss"],
+                    "Training Loss", npoints_to_average=10)
+    utils.plot_loss(val_history["loss"],"Validation Loss")
+    plt.ylabel("Loss")
+    plt.ylim([0, .4]) 
+    plt.legend()
+    plt.subplot(1, 2, 2)
+    plt.ylim([0.92, .98])
+    utils.plot_loss(
+        val_history["accuracy"], "Validation Accuracy")
+    plt.ylabel("Validation Accuracy")
+    plt.legend()
+    #plt.savefig("task4d.png")
+    plt.show()
+    
+    
+    
     ###################
     # Task 4e)        #
     ###################
@@ -267,23 +306,29 @@ if __name__ == "__main__":
 
     plt.figure(figsize=(20, 12))
     plt.subplot(1, 2, 1)
+   
     plt.ylim([0.00, 1.00])
     utils.plot_loss(
-        train_history_64_layers["loss"], "10 hidden layers", npoints_to_average=10)
+        train_history_64_layers["loss"], "Training Loss 10 hidden layers", npoints_to_average=10)
     plt.ylabel("Training Loss")
-    utils.plot_loss(val_history_64_layers["loss"],"Validation Loss")
+    utils.plot_loss(val_history_64_layers["loss"],"Validation Loss 10 hidden layers")
     plt.ylabel("Validation Loss")
+    utils.plot_loss(train_history["loss"],
+                    "Training Loss 2 hidden layers", npoints_to_average=10)
+    utils.plot_loss(val_history["loss"],"Validation Loss 2 hidden layers")
     
     plt.legend()
 
     plt.subplot(1, 2, 2)
-    plt.ylim([0.80, .99])
+    plt.ylim([0.92, .97])
     utils.plot_loss(
-        val_history_64_layers["accuracy"], "10 hidden layers")
+        val_history_64_layers["accuracy"], "Validation Accuracy 10 hidden layers")
+    utils.plot_loss(
+        val_history["accuracy"], "Validation Accuracy 2 hidden layers")
     plt.ylabel("Validation Accuracy")
     plt.legend()
     plt.savefig("task4_e.png")
     plt.show()
-    '''
+    
 
     
