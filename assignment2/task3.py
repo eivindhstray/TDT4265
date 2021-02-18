@@ -29,7 +29,7 @@ if __name__ == "__main__":
     ##########################
     # Shuffled vs unshuffled #
     ##########################
-    '''
+    
     shuffle_data = True
     model = SoftmaxModel(
         neurons_per_layer,
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     )
     train_history_shuffled, val_history_shuffled = trainer.train(num_epochs)
     
-
+    '''
     shuffle_data = False
     model_no_shuffle = SoftmaxModel(
         neurons_per_layer,
@@ -55,6 +55,7 @@ if __name__ == "__main__":
     )
     train_history_unshuffled, val_history_unshuffled= trainer_shuffle.train(
         num_epochs)
+    
 
     plt.figure(figsize=(20, 12))
     plt.subplot(1, 2, 1)
@@ -81,22 +82,8 @@ if __name__ == "__main__":
     #################
     #Task 3 below   #
     #################
-    '''
-    shuffle_data = True
-    use_improved_sigmoid= True
-    model = SoftmaxModel(
-        neurons_per_layer,
-        use_improved_sigmoid,
-        use_improved_weight_init)
-    trainer = SoftmaxTrainer(
-        momentum_gamma, use_momentum,
-        model, learning_rate, batch_size, shuffle_data,
-        X_train, Y_train, X_val, Y_val,
-    )
-    train_history, val_history = trainer.train(num_epochs)
-    
+    shuffle_data = True #Shuffling data is generally a good thing, so we'll just do it as a fundamental thing.
 
-    
     use_improved_weight_init = True
     model_no_shuffle = SoftmaxModel(
         neurons_per_layer,
@@ -109,7 +96,19 @@ if __name__ == "__main__":
     )
     train_history_weights, val_history_weights= trainer_shuffle.train(
         num_epochs)
-    shuffle_data = True
+
+
+    use_improved_sigmoid= True
+    model = SoftmaxModel(
+        neurons_per_layer,
+        use_improved_sigmoid,
+        use_improved_weight_init)
+    trainer = SoftmaxTrainer(
+        momentum_gamma, use_momentum,
+        model, learning_rate, batch_size, shuffle_data,
+        X_train, Y_train, X_val, Y_val,
+    )
+    train_history, val_history = trainer.train(num_epochs)
 
 
     
@@ -147,6 +146,8 @@ if __name__ == "__main__":
         val_history["accuracy"], "Improved sigmoid")
     utils.plot_loss(
         val_history_weights["accuracy"], "Improved weights")
+    utils.plot_loss(
+        val_history_shuffled["accuracy"], "Only shuffled, no other improvements")
     
     utils.plot_loss(
         val_history_final["accuracy"], "Using momentum")
@@ -157,7 +158,6 @@ if __name__ == "__main__":
     
     
     
-    '''
     
     ##############################
     #Task 4 a and b below        #
@@ -247,7 +247,7 @@ if __name__ == "__main__":
     ################
     # Task 4d)     #
     ################
-    
+    '''
     neurons_per_layer = [48,48,10]
     shuffle_data = True
     use_improved_sigmoid= True
@@ -280,9 +280,9 @@ if __name__ == "__main__":
     plt.legend()
     #plt.savefig("task4d.png")
     plt.show()
+    '''
     
-    
-    
+    '''
     ###################
     # Task 4e)        #
     ###################
@@ -329,6 +329,6 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig("task4_e.png")
     plt.show()
-    
+    '''
 
     

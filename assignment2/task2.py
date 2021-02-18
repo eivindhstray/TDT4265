@@ -60,9 +60,9 @@ class SoftmaxTrainer(BaseTrainer):
 
         if (self.use_momentum):
            for i,grad in enumerate(model.grads):
-                #self.previous_grads[i] = self.learning_rate*grad + self.momentum_gamma*self.previous_grads[i]
+                
                 model.ws[i] -= self.learning_rate*self.previous_grads[i]
-                #self.previous_grads[i] = self.learning_rate*grad + self.momentum_gamma*self.previous_grads[i]
+            
                 self.previous_grads[i] = grad + self.momentum_gamma*self.previous_grads[i]
         else:
 
