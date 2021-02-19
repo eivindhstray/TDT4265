@@ -29,7 +29,7 @@ if __name__ == "__main__":
     ##########################
     # Shuffled vs unshuffled #
     ##########################
-    
+    '''
     shuffle_data = True
     model = SoftmaxModel(
         neurons_per_layer,
@@ -41,7 +41,7 @@ if __name__ == "__main__":
         X_train, Y_train, X_val, Y_val,
     )
     train_history_shuffled, val_history_shuffled = trainer.train(num_epochs)
-    
+    '''
     '''
     shuffle_data = False
     model_no_shuffle = SoftmaxModel(
@@ -82,6 +82,7 @@ if __name__ == "__main__":
     #################
     #Task 3 below   #
     #################
+    '''
     shuffle_data = True #Shuffling data is generally a good thing, so we'll just do it as a fundamental thing.
 
     use_improved_weight_init = True
@@ -157,7 +158,7 @@ if __name__ == "__main__":
     plt.show()
     
     
-    
+    '''
     
     ##############################
     #Task 4 a and b below        #
@@ -282,7 +283,7 @@ if __name__ == "__main__":
     plt.show()
     '''
     
-    '''
+    
     ###################
     # Task 4e)        #
     ###################
@@ -329,6 +330,6 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig("task4_e.png")
     plt.show()
-    '''
+    
 
     
