@@ -17,6 +17,7 @@ class ExampleModel(nn.Module):
                 image_channels. Number of color channels in image (3)
                 num_classes: Number of classes we want to predict (10)
         """
+
         super().__init__()
         # TODO: Implement this function (Task  2a)
         num_filters = 32  # Set number of filters in first conv layer
@@ -52,6 +53,13 @@ class ExampleModel(nn.Module):
         batch_size = x.shape[0]
         out = x
         expected_shape = (batch_size, self.num_classes)
+
+        batch_size = x.shape[0]
+        out = self.feature_extractor(x)
+        out = out.view(batch_size, -1)
+        out = self.classifier(out)       
+        
+        
         assert out.shape == (batch_size, self.num_classes),\
             f"Expected output of forward pass to be: {expected_shape}, but got: {out.shape}"
         return out

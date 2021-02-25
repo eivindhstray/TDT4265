@@ -5,6 +5,7 @@ import time
 import collections
 import utils
 import pathlib
+import numpy as np
 
 
 def compute_loss_and_accuracy(
@@ -23,16 +24,36 @@ def compute_loss_and_accuracy(
     """
     average_loss = 0
     accuracy = 0
+    N = 0 #divide by this in the end, summing variable.
     # TODO: Implement this function (Task  2a)
     with torch.no_grad():
         for (X_batch, Y_batch) in dataloader:
+
             # Transfer images/labels to GPU VRAM, if possible
             X_batch = utils.to_cuda(X_batch)
             Y_batch = utils.to_cuda(Y_batch)
             # Forward pass the images through our model
             output_probs = model(X_batch)
 
+            targets = np.argmax(Y_batch,axis=0)
+            predicted = np.argmax(output_probs,axis=0)
+
             # Compute Loss and Accuracy
+            loss = model.loss_criterion(output_probs,Y_batch)
+            average_loss += np.sum(loss,axis=0)
+
+            accuracy += np.sum(targets==predicted,axis=0)
+
+            N += X_batch.shape[0]
+    
+    try:
+        accuracy /=N
+        average_loss /=N
+    except ZeroDivisionError:
+        print(r"Dividing by 0")
+
+        
+            
 
     return average_loss, accuracy
 
