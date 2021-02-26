@@ -117,12 +117,14 @@ def create_plots(trainer: Trainer, name: str):
 if __name__ == "__main__":
     # Set the random generator seed (parameters, shuffling etc).
     # You can try to change this and check if you still get the same result! 
+    
     utils.set_seed(0)
     epochs = 10
     batch_size = 64
     learning_rate = 5e-2
     early_stop_count = 4
     dataloaders = load_cifar10(batch_size)
+    train_set,val_set,test_set = dataloaders
     model = ExampleModel(image_channels=3, num_classes=10)
     trainer = Trainer(
         batch_size,
@@ -132,5 +134,10 @@ if __name__ == "__main__":
         model,
         dataloaders
     )
-    trainer.train()
-    create_plots(trainer, "task2")
+    trainer.load_best_model()
+    print(compute_loss_and_accuracy(dataloader=test_set,model = model, loss_criterion=nn.CrossEntropyLoss()))
+    
+    #create_plots(trainer, "task2")
+    
+
+

@@ -6,6 +6,7 @@ import collections
 import utils
 import pathlib
 import numpy as np
+from tqdm import tqdm
 
 
 def compute_loss_and_accuracy(
@@ -25,6 +26,7 @@ def compute_loss_and_accuracy(
     average_loss = 0
     accuracy = 0
     N = 0 #divide by this in the end, summing variable.
+    iterations = 0
     # TODO: Implement this function (Task  2a)
     with torch.no_grad():
         for (X_batch, Y_batch) in dataloader:
@@ -32,23 +34,23 @@ def compute_loss_and_accuracy(
             # Transfer images/labels to GPU VRAM, if possible
             X_batch = utils.to_cuda(X_batch)
             Y_batch = utils.to_cuda(Y_batch)
+            
             # Forward pass the images through our model
-            output_probs = model(X_batch)
+            pred = model.forward(X_batch)
+            _,predicted = torch.max(pred,axis=1)
+            accuracy += (predicted == Y_batch).sum().item()
+            N += X_batch.size(0)
+            iterations += 1
+            loss = loss_criterion(pred,Y_batch)
+            average_loss += torch.sum(loss)
+            
 
-            targets = np.argmax(Y_batch,axis=0)
-            predicted = np.argmax(output_probs,axis=0)
 
-            # Compute Loss and Accuracy
-            loss = model.loss_criterion(output_probs,Y_batch)
-            average_loss += np.sum(loss,axis=0)
-
-            accuracy += np.sum(targets==predicted,axis=0)
-
-            N += X_batch.shape[0]
+            
     
     try:
         accuracy /=N
-        average_loss /=N
+        average_loss /=iterations
     except ZeroDivisionError:
         print(r"Dividing by 0")
 
@@ -182,7 +184,7 @@ class Trainer:
         def should_validate_model():
             return self.global_step % self.num_steps_per_val == 0
 
-        for epoch in range(self.epochs):
+        for epoch in tqdm(range(self.epochs)):
             self.epoch = epoch
             # Perform a full pass through all the training samples
             for X_batch, Y_batch in self.dataloader_train:
