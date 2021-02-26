@@ -14,6 +14,7 @@ class ExampleModel(nn.Module):
         """
             Is called when model is initialized.
             Args:
+            
                 image_channels. Number of color channels in image (3)
                 num_classes: Number of classes we want to predict (10)
         """
