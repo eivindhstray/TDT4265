@@ -124,7 +124,7 @@ if __name__ == "__main__":
     learning_rate = 5e-2
     early_stop_count = 4
     dataloaders = load_cifar10(batch_size)
-    train_set,val_set,test_set = dataloaders
+    #train_set,val_set,test_set = dataloaders
     model = ExampleModel(image_channels=3, num_classes=10)
     trainer = Trainer(
         batch_size,
@@ -134,10 +134,11 @@ if __name__ == "__main__":
         model,
         dataloaders
     )
-    trainer.load_best_model()
-    print(compute_loss_and_accuracy(dataloader=test_set,model = model, loss_criterion=nn.CrossEntropyLoss()))
+    trainer.train()
+    test_set = trainer.dataloader_test
     
-    #create_plots(trainer, "task2")
+    create_plots(trainer, "task2")
+    print(compute_loss_and_accuracy(dataloader=test_set,model = model, loss_criterion=nn.CrossEntropyLoss()))
     
 
 
