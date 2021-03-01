@@ -46,14 +46,16 @@ def torch_image_to_numpy(image: torch.Tensor):
     assert image.shape[0] == 3, "Expected color channel to be on first axis. Got: {}".format(image.shape)
     image = np.moveaxis(image, 0, 2)
     return image
-'''
+
 activation_1 = image
-for child in model.children():
+
+for i,child in enumerate(model.children()):
+    
     activation_1 = child(activation_1)
     img = torch_image_to_numpy(activation_1[0][1])
     plt.imshow(img)
     plt.show()
-'''
+    
 
 
 
