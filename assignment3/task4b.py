@@ -57,11 +57,11 @@ plt.figure(figsize=(20, 8))
 for i,child in enumerate(model.children()):
     print(child)
     activation_1 = child(activation_1)
-    if (i+1 ==8):
+    if (i+1 ==8): #Trial and error!
         print("Lastchild:",activation_1.shape)
         break
 
-for i in range(10):
+for i in range(10): #Plot the 10 first filters from the last convolution layer
     img = torch_image_to_numpy(activation_1[0][i])
     plt.subplot(1, 10, i+1)
     plt.imshow(img)
