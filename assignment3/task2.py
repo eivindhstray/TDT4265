@@ -140,8 +140,8 @@ if __name__ == "__main__":
     val_set = trainer.dataloader_val
     train_set = trainer.dataloader_train
     
-    #create_plots(trainer, "task2")
-    print(compute_loss_and_accuracy(dataloader=train_set,model = model, loss_criterion=nn.CrossEntropyLoss()))
+    #create_plots(trainer, "task2_1")
+    print(compute_loss_and_accuracy(dataloader=test_set,model = model, loss_criterion=nn.CrossEntropyLoss()))
     
 
 
