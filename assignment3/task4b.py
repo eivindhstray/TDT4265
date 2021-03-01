@@ -47,20 +47,34 @@ def torch_image_to_numpy(image: torch.Tensor):
     image = np.moveaxis(image, 0, 2)
     return image
 
+
+
+#############
+# Task 4 c  #
+#############
 activation_1 = image
-
+plt.figure(figsize=(20, 8))
 for i,child in enumerate(model.children()):
-    
+    print(child)
     activation_1 = child(activation_1)
-    img = torch_image_to_numpy(activation_1[0][1])
+    if (i+1 ==8):
+        print("Lastchild:",activation_1.shape)
+        break
+
+for i in range(10):
+    img = torch_image_to_numpy(activation_1[0][i])
+    plt.subplot(1, 10, i+1)
     plt.imshow(img)
-    plt.show()
+plt.savefig("plots/4c.png")
+plt.show()
+
     
 
 
 
-
-
+############
+# Task 4b  #   
+############
 indices = [14, 26, 32, 49, 52]
 plt.figure(figsize=(20, 8))
 
