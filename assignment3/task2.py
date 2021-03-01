@@ -35,9 +35,7 @@ class ExampleModel(nn.Module):
                 padding=2
             ),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2,stride=2)
-        )
-        self.feature_extraction_2 = nn.Sequential(# The output of feature_extractor_2 will be [batch_size, num_filters, 8, 8]
+            nn.MaxPool2d(kernel_size=2,stride=2),
             nn.Conv2d(
                 in_channels=32,
                 out_channels=64,
@@ -46,9 +44,7 @@ class ExampleModel(nn.Module):
                 padding=2
             ),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2,stride=2)
-        )
-        self.feature_extraction_3 = nn.Sequential(# The output of feature_extractor_3 will be [batch_size, num_filters, 4, 4]
+            nn.MaxPool2d(kernel_size=2,stride=2),
             nn.Conv2d(
                 in_channels=64,
                 out_channels=128,
@@ -57,10 +53,13 @@ class ExampleModel(nn.Module):
                 padding=2
             ),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2,stride=2)
+            nn.MaxPool2d(kernel_size=2,stride=2),
         )
-        self.fc_1 = self.classifier = nn.Sequential(
+        
+        self.fc = self.classifier = nn.Sequential(
             nn.Linear(128*4*4, 64), #after 3 maxpools where each halves "x-y" dimensions
+            nn.ReLU(),
+            nn.Linear(64, 10),
         )
 
         self.num_output_features = 32*32*32
@@ -69,9 +68,7 @@ class ExampleModel(nn.Module):
         # Outputs num_classes predictions, 1 for each class.
         # There is no need for softmax activation function, as this is
         # included with nn.CrossEntropyLoss
-        self.classifier = nn.Sequential(
-            nn.Linear(64, 10),
-        )
+        
 
     def forward(self, x):
         """
@@ -83,12 +80,9 @@ class ExampleModel(nn.Module):
         batch_size = x.shape[0]
         out = x
         expected_shape = (batch_size, self.num_classes)
-        out = self.feature_extractor_1(out)
-        out = self.feature_extraction_2(out)
-        out = self.feature_extraction_3(out)
+        out = self.feature_extractor(out)
         out = out.view(batch_size, -1)
-        out = self.fc_1(out)
-        out = self.classifier(out)     
+        out = self.fc(out)   
         
         
         assert out.shape == (batch_size, self.num_classes),\
