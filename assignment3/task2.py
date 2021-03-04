@@ -26,7 +26,7 @@ class ExampleModel(nn.Module):
 
         self.num_classes = num_classes
         # Define the convolutional layers
-        self.feature_extractor_1 = nn.Sequential( # The output of feature_extractor_1 will be [batch_size, num_filters, 16, 16]
+        self.feature_extractor = nn.Sequential( # The output of feature_extractor_1 will be [batch_size, num_filters, 16, 16]
             nn.Conv2d(
                 in_channels=3,
                 out_channels=32,
@@ -128,8 +128,8 @@ if __name__ == "__main__":
         model,
         dataloaders
     )
-    #trainer.train()
-    trainer.load_best_model()
+    trainer.train()
+    #trainer.load_best_model()
     test_set = trainer.dataloader_test
     val_set = trainer.dataloader_val
     train_set = trainer.dataloader_train
