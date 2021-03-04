@@ -135,6 +135,7 @@ if __name__ == "__main__":
     train_set = trainer.dataloader_train
     
     #create_plots(trainer, "task2_1")
+    model.eval()
     print(compute_loss_and_accuracy(dataloader=test_set,model = model, loss_criterion=nn.CrossEntropyLoss()))
     
 
