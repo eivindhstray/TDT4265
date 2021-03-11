@@ -18,9 +18,26 @@ def calculate_iou(prediction_box, gt_box):
     # YOUR CODE HERE
 
     # Compute intersection
-
+    xmin,ymin,xmax,ymax = 0,1,2,3
+    overlapping_x = 0
+    overlapping_x = max(0,min(prediction_box[xmax],gt_box[xmax])-max(prediction_box[xmin],gt_box[xmin]))
+    if overlapping_x<0:
+        overlapping_x = 0
+    overlapping_y = 0
+    overlapping_y = max(0,min(prediction_box[ymax],gt_box[ymax])-max(prediction_box[ymin],gt_box[ymin]))
+    if overlapping_y<0:
+        overlapping_y = 0
+    intersection = overlapping_x*overlapping_y
     # Compute union
-    iou = 0
+
+    union = (gt_box[xmax]-gt_box[xmin])*(gt_box[ymax]-gt_box[ymin])
+    
+    union += (prediction_box[xmax]-prediction_box[xmin])*(prediction_box[ymax]-prediction_box[ymin])
+
+    if intersection == union:
+        return 1.0
+    union -= intersection
+    iou = intersection/union
     assert iou >= 0 and iou <= 1
     return iou
 
@@ -36,7 +53,9 @@ def calculate_precision(num_tp, num_fp, num_fn):
     Returns:
         float: value of precision
     """
-    raise NotImplementedError
+    if(num_tp+num_fp == 0):
+        return 1.0
+    return ((num_tp)/(num_tp+num_fp))
 
 
 def calculate_recall(num_tp, num_fp, num_fn):
@@ -49,7 +68,9 @@ def calculate_recall(num_tp, num_fp, num_fn):
     Returns:
         float: value of recall
     """
-    raise NotImplementedError
+    if(num_tp+num_fn==0):
+        return 0.0
+    return ((num_tp)/(num_tp+num_fn))
 
 
 def get_all_box_matches(prediction_boxes, gt_boxes, iou_threshold):
@@ -73,11 +94,11 @@ def get_all_box_matches(prediction_boxes, gt_boxes, iou_threshold):
             Each row includes [xmin, ymin, xmax, ymax]
     """
     # Find all possible matches with a IoU >= iou threshold
-
-
+    
     # Sort all matches on IoU in descending order
 
     # Find all matches with the highest IoU threshold
+
 
 
 
