@@ -223,7 +223,7 @@ def get_precision_recall_curve(
     # Instead of going over every possible confidence score threshold to compute the PR
     # curve, we will use an approximation
     confidence_thresholds = np.linspace(0, 1, 500)
-    # YOUR CODE HERE
+  
 
     precisions = [] 
     recalls = []
@@ -233,7 +233,6 @@ def get_precision_recall_curve(
         for conf, gts,preds in zip(confidence_scores,all_gt_boxes,all_prediction_boxes):
             pred = preds[conf>=threshold]
             gt = gts[conf>=threshold]
-            
             all_gts.append(pred)
             all_preds.append(gt)
         precision,recall = calculate_precision_recall_all_images(all_preds,all_gts,iou_threshold)
