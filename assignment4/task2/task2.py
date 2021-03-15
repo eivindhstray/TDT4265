@@ -92,24 +92,36 @@ def get_all_box_matches(prediction_boxes, gt_boxes, iou_threshold):
 
     matches_pred = np.array([])
     matches_gt = np.array([])
-    
-    
+    indexes_gt = []
+    indexes_pred = []
+    ious = np.array([])
 
-    for pred in range(prediction_boxes.shape[0]):
-        current_threshold = iou_threshold
-        for gt in range(gt_boxes.shape[0]):
+
+    for gt in range(gt_boxes.shape[0]):
+        for pred in range(prediction_boxes.shape[0]):
             iou = calculate_iou(prediction_boxes[pred],gt_boxes[gt])
-            if iou>=current_threshold:
-                current_threshold = iou
-                matches_gt = np.append(matches_gt,gt_boxes[gt]).astype(float)
-                matches_pred = np.append(matches_pred,prediction_boxes[pred]).astype(float)
+            if iou>=iou_threshold:
+                indexes_gt.append(gt)
+                indexes_pred.append(pred)
+                ious = np.append(ious,iou)
 
-    
     # Sort all matches on IoU in descending order
     
+    increasing = np.argsort(ious)
+    decreasing = increasing[::-1]
+    
+    for index in decreasing:
+        pred_index = indexes_pred[index]
+        gt_index = indexes_gt[index]
+        print(pred_index)
+        print(gt_index)
+        matches_pred = np.append(matches_pred,prediction_boxes[pred_index])
+        matches_gt = np.append(matches_gt,gt_boxes[gt_index])
+    # Sort all matches on IoU in descending order
     
 
     # Find all matches with the highest IoU threshold
+    #print(matches_pred,matches_gt)
     return np.array([matches_pred]), np.array([matches_gt])
 
 
