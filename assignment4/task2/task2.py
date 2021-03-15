@@ -110,13 +110,18 @@ def get_all_box_matches(prediction_boxes, gt_boxes, iou_threshold):
     increasing = np.argsort(ious)
     decreasing = increasing[::-1]
     
+    taken_gt = []
+    taken_pred = []
+
     for index in decreasing:
+        
         pred_index = indexes_pred[index]
         gt_index = indexes_gt[index]
-        print(pred_index)
-        print(gt_index)
-        matches_pred = np.append(matches_pred,prediction_boxes[pred_index])
-        matches_gt = np.append(matches_gt,gt_boxes[gt_index])
+        if ((pred_index not in taken_pred) and (gt_index not in taken_gt)):
+            taken_gt.append(gt_index)
+            taken_pred.append(pred_index)
+            matches_pred = np.append(matches_pred,prediction_boxes[pred_index])
+            matches_gt = np.append(matches_gt,gt_boxes[gt_index])
     # Sort all matches on IoU in descending order
     
 
