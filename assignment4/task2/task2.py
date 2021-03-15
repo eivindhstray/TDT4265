@@ -15,29 +15,24 @@ def calculate_iou(prediction_box, gt_box):
         returns:
             float: value of the intersection of union for the two boxes.
     """
-    # YOUR CODE HERE
-
-    # Compute intersection
+    # Indeces for readability 
     xmin,ymin,xmax,ymax = 0,1,2,3
-    overlapping_x = 0
+    # Compute intersection
+    # This is not super intuitive, but rest assured, it works
     overlapping_x = max(0,min(prediction_box[xmax],gt_box[xmax])-max(prediction_box[xmin],gt_box[xmin]))
-    if overlapping_x<0:
-        overlapping_x = 0
-    overlapping_y = 0
     overlapping_y = max(0,min(prediction_box[ymax],gt_box[ymax])-max(prediction_box[ymin],gt_box[ymin]))
-    if overlapping_y<0:
-        overlapping_y = 0
     intersection = overlapping_x*overlapping_y
     # Compute union
-
     union = (gt_box[xmax]-gt_box[xmin])*(gt_box[ymax]-gt_box[ymin])
-    
     union += (prediction_box[xmax]-prediction_box[xmin])*(prediction_box[ymax]-prediction_box[ymin])
 
-    if intersection == union:
-        return 1.0
     union -= intersection
-    iou = intersection/union
+    try:
+        iou = intersection/union
+        
+    except ZeroDivisionError:
+        print("Encountered zero division in Calculate IoU function...")
+
     assert iou >= 0 and iou <= 1
     return iou
 
@@ -94,15 +89,28 @@ def get_all_box_matches(prediction_boxes, gt_boxes, iou_threshold):
             Each row includes [xmin, ymin, xmax, ymax]
     """
     # Find all possible matches with a IoU >= iou threshold
+
+    matches_pred = np.array([])
+    matches_gt = np.array([])
+    
+    
+
+    for pred in range(prediction_boxes.shape[0]):
+        current_threshold = iou_threshold
+        for gt in range(gt_boxes.shape[0]):
+            iou = calculate_iou(prediction_boxes[pred],gt_boxes[gt])
+            if iou>=current_threshold:
+                current_threshold = iou
+                matches_gt = np.append(matches_gt,gt_boxes[gt]).astype(float)
+                matches_pred = np.append(matches_pred,prediction_boxes[pred]).astype(float)
+
     
     # Sort all matches on IoU in descending order
+    
+    
 
     # Find all matches with the highest IoU threshold
-
-
-
-
-    return np.array([]), np.array([])
+    return np.array([matches_pred]), np.array([matches_gt])
 
 
 def calculate_individual_image_result(prediction_boxes, gt_boxes, iou_threshold):
