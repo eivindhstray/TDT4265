@@ -90,8 +90,8 @@ def get_all_box_matches(prediction_boxes, gt_boxes, iou_threshold):
     """
     # Find all possible matches with a IoU >= iou threshold
 
-    matches_pred = np.array([])
-    matches_gt = np.array([])
+    matches_pred = np.empty((0,4),float)
+    matches_gt =  np.empty((0,4),float)
     indexes_gt = []
     indexes_pred = []
     ious = np.array([])
@@ -120,14 +120,14 @@ def get_all_box_matches(prediction_boxes, gt_boxes, iou_threshold):
         if ((pred_index not in taken_pred) and (gt_index not in taken_gt)):
             taken_gt.append(gt_index)
             taken_pred.append(pred_index)
-            matches_pred = np.append(matches_pred,prediction_boxes[pred_index])
-            matches_gt = np.append(matches_gt,gt_boxes[gt_index])
+            matches_pred = np.append(matches_pred,[prediction_boxes[pred_index]],axis = 0)
+            matches_gt = np.append(matches_gt,[gt_boxes[gt_index]],axis = 0)
     # Sort all matches on IoU in descending order
     
 
     # Find all matches with the highest IoU threshold
-    #print(matches_pred,matches_gt)
-    return np.array([matches_pred]), np.array([matches_gt])
+    print("Matches",matches_pred,matches_gt)
+    return matches_pred, matches_gt
 
 
 def calculate_individual_image_result(prediction_boxes, gt_boxes, iou_threshold):
@@ -148,8 +148,15 @@ def calculate_individual_image_result(prediction_boxes, gt_boxes, iou_threshold)
             {"true_pos": int, "false_pos": int, false_neg": int}
     """
 
-    raise NotImplementedError
+    CM = {"true_pos": 0,
+            "false_pos": 0,
+            "false_neg": 0}
 
+    match_pred, match_gt = get_all_box_matches(prediction_boxes,gt_boxes,iou_threshold)
+    print(prediction_boxes,gt_boxes)
+    CM["true_pos"] = match_pred.shape[0]
+    print(CM)
+    return CM
 
 def calculate_precision_recall_all_images(
     all_prediction_boxes, all_gt_boxes, iou_threshold):
