@@ -227,19 +227,19 @@ def get_precision_recall_curve(
 
     precisions = [] 
     recalls = []
-    true_pos = 0
-    false_pos = 0
-    false_neg = 0
-    for conf_level in confidence_thresholds:
-        for pred_boxes, gt_boxes, scores in zip(all_prediction_boxes,all_gt_boxes,confidence_scores):
-    
-            CM = calculate_individual_image_result(pred_boxes*scores[0], gt_boxes*scores[1], iou_threshold)
-            true_pos = CM["true_pos"]
-            false_pos = CM["false_pos"]
-            false_neg = CM["false_neg"]
+    for threshold in confidence_thresholds:
         
-            recalls.append(calculate_recall(true_pos,false_pos,false_neg))
-            precisions.append(calculate_precision(true_pos,false_pos,false_neg))
+        precision_sum = 0.0
+        recall_sum = 0.0
+        for conf, gts,preds in zip(confidence_scores,all_gt_boxes,all_prediction_boxes):
+            pred = np.array([preds[conf>threshold]])
+            gt = np.array([gts[conf>threshold]])
+            precision,recall = calculate_precision_recall_all_images(pred,gt,iou_threshold)
+            precision_sum += precision
+            recall_sum += recall
+            
+        recalls.append(recall_sum)
+        precisions.append(precision_sum)
 
     return np.array(precisions), np.array(recalls)
 
