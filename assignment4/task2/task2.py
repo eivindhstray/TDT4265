@@ -126,7 +126,7 @@ def get_all_box_matches(prediction_boxes, gt_boxes, iou_threshold):
     
 
     # Find all matches with the highest IoU threshold
-    print("Matches",matches_pred,matches_gt)
+    
     return matches_pred, matches_gt
 
 
@@ -153,8 +153,9 @@ def calculate_individual_image_result(prediction_boxes, gt_boxes, iou_threshold)
             "false_neg": 0}
 
     match_pred, match_gt = get_all_box_matches(prediction_boxes,gt_boxes,iou_threshold)
-    print(prediction_boxes,gt_boxes)
+    CM["false_pos"] = prediction_boxes.shape[0]-match_pred.shape[0]
     CM["true_pos"] = match_pred.shape[0]
+    CM["false_neg"] = gt_boxes.shape[0]-match_gt.shape[0]
     print(CM)
     return CM
 
@@ -177,7 +178,20 @@ def calculate_precision_recall_all_images(
     Returns:
         tuple: (precision, recall). Both float.
     """
-    raise NotImplementedError
+    true_pos = 0
+    false_pos = 0
+    false_neg = 0
+    for pred_boxes, gt_boxes in zip(all_prediction_boxes,all_gt_boxes):
+  
+        CM = calculate_individual_image_result(pred_boxes, gt_boxes, iou_threshold)
+        true_pos += CM["true_pos"]
+        false_pos += CM["false_pos"]
+        false_neg += CM["false_neg"]
+    
+    recall = calculate_recall(true_pos,false_pos,false_neg)
+    precision = calculate_precision(true_pos,false_pos,false_neg)
+    
+    return precision,recall
 
 
 def get_precision_recall_curve(
@@ -213,6 +227,20 @@ def get_precision_recall_curve(
 
     precisions = [] 
     recalls = []
+    true_pos = 0
+    false_pos = 0
+    false_neg = 0
+    for conf_level in confidence_thresholds:
+        for pred_boxes, gt_boxes, scores in zip(all_prediction_boxes,all_gt_boxes,confidence_scores):
+    
+            CM = calculate_individual_image_result(pred_boxes*scores[0], gt_boxes*scores[1], iou_threshold)
+            true_pos = CM["true_pos"]
+            false_pos = CM["false_pos"]
+            false_neg = CM["false_neg"]
+        
+            recalls.append(calculate_recall(true_pos,false_pos,false_neg))
+            precisions.append(calculate_precision(true_pos,false_pos,false_neg))
+
     return np.array(precisions), np.array(recalls)
 
 
