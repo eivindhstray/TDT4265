@@ -156,7 +156,6 @@ def calculate_individual_image_result(prediction_boxes, gt_boxes, iou_threshold)
     CM["false_pos"] = prediction_boxes.shape[0]-match_pred.shape[0]
     CM["true_pos"] = match_pred.shape[0]
     CM["false_neg"] = gt_boxes.shape[0]-match_gt.shape[0]
-    print(CM)
     return CM
 
 def calculate_precision_recall_all_images(
@@ -223,26 +222,25 @@ def get_precision_recall_curve(
     # Instead of going over every possible confidence score threshold to compute the PR
     # curve, we will use an approximation
     confidence_thresholds = np.linspace(0, 1, 500)
-  
 
-    precisions = [] 
+
+    precisions = []
     recalls = []
     for threshold in confidence_thresholds:
         all_preds = []
-        all_gts = []
-        for conf, gts,preds in zip(confidence_scores,all_gt_boxes,all_prediction_boxes):
-            pred = preds[conf>=threshold]
-            gt = gts[conf>=threshold]
-            all_gts.append(pred)
-            all_preds.append(gt)
-        precision,recall = calculate_precision_recall_all_images(all_preds,all_gts,iou_threshold)
-        
-            
+        for conf, preds in zip(confidence_scores, all_prediction_boxes):
+            img= []
+            for i, bound in enumerate(conf):
+                if(bound >= threshold):
+                    img.append(preds[i])
+
+            all_preds.append(np.array(img))
+        precision, recall = calculate_precision_recall_all_images(all_preds, all_gt_boxes, iou_threshold)
+
         recalls.append(recall)
         precisions.append(precision)
 
     return np.array(precisions), np.array(recalls)
-
 
 def plot_precision_recall_curve(precisions, recalls):
     """Plots the precision recall curve.
@@ -277,8 +275,17 @@ def calculate_mean_average_precision(precisions, recalls):
     # Calculate the mean average precision given these recall levels.
     recall_levels = np.linspace(0, 1.0, 11)
     # YOUR CODE HERE
-    average_precision = 0
-    return average_precision
+
+    # Calculate the mean average precision given these recall levels.
+    AP = 0
+    for rec in recall_levels:
+        myPre = 0
+        for i in range(len(precisions)):
+            if precisions[i] > myPre and recalls[i] >= rec:
+                myPre = precisions[i]
+        AP += myPre
+    AP = AP/float(len(recall_levels))
+    return AP
 
 
 def mean_average_precision(ground_truth_boxes, predicted_boxes):
