@@ -26,7 +26,7 @@ class BasicModel(torch.nn.Module):
                                     nn.Conv2d(in_channels=image_channels,stride=1, padding = 1,out_channels=32,kernel_size=3),
                                     nn.MaxPool2d(stride=2,kernel_size=2),
                                     nn.ReLU(),
-                                    nn.Conv2d(in_channels=64,stride=1, padding = 1, out_channels=64,kernel_size=3),
+                                    nn.Conv2d(in_channels=32,stride=1, padding = 1, out_channels=64,kernel_size=3),
                                     nn.MaxPool2d(stride=2,kernel_size=2),
                                     nn.ReLU(),
                                     nn.Conv2d(in_channels=64,stride=1, padding = 1, out_channels=64,kernel_size=3),
@@ -44,7 +44,7 @@ class BasicModel(torch.nn.Module):
                                     nn.ReLU(),
                                     nn.Conv2d(in_channels = self.output_channels[1], stride = 1, padding = 1, out_channels = 256, kernel_size = 3),
                                     nn.ReLU(),
-                                    nn.Conv2d(in_channels = self.output_channels[0], stride = 2, padding = 1, out_channels = self.output_channels[2], kernel_size = 3)
+                                    nn.Conv2d(in_channels = 256, stride = 2, padding = 1, out_channels = self.output_channels[2], kernel_size = 3)
         )
         self.layer_4 = nn.Sequential(
                                     nn.ReLU(),
