@@ -16,7 +16,6 @@ from ssd.utils.checkpoint import CheckPointer
 from ssd.utils.logger import setup_logger
 from ssd import torch_utils
 
-
 from six.moves import urllib
 opener = urllib.request.build_opener()
 opener.addheaders = [('User-agent', 'Mozilla/5.0')]

@@ -35,34 +35,34 @@ class BasicModel(torch.nn.Module):
         )
         self.layer_2 = nn.Sequential(
                                     nn.ReLU(),
-                                    nn.Conv2d(in_channels = self.out_channels[0], stride = 1, padding = 1, out_channels = 256, kernel_size = 3),
+                                    nn.Conv2d(in_channels = self.output_channels[0], stride = 1, padding = 1, out_channels = 256, kernel_size = 3),
                                     nn.ReLU(),
-                                    nn.Conv2d(in_channels = 256, stride = 2, padding = 1, out_channels = self.out_channels[1], kernel_size = 3)
+                                    nn.Conv2d(in_channels = 256, stride = 2, padding = 1, out_channels = self.output_channels[1], kernel_size = 3)
         )
             
         self.layer_3 = nn.Sequential(
                                     nn.ReLU(),
-                                    nn.Conv2d(in_channels = self.out_channels[1], stride = 1, padding = 1, out_channels = 256, kernel_size = 3),
+                                    nn.Conv2d(in_channels = self.output_channels[1], stride = 1, padding = 1, out_channels = 256, kernel_size = 3),
                                     nn.ReLU(),
-                                    nn.Conv2d(in_channels = self.out_channels[0], stride = 2, padding = 1, out_channels = self.out_channels[2], kernel_size = 3)
+                                    nn.Conv2d(in_channels = self.output_channels[0], stride = 2, padding = 1, out_channels = self.output_channels[2], kernel_size = 3)
         )
         self.layer_4 = nn.Sequential(
                                     nn.ReLU(),
-                                    nn.Conv2d(in_channels = self.out_channels[2], stride = 1, padding = 1, out_channels = 128, kernel_size = 3),
+                                    nn.Conv2d(in_channels = self.output_channels[2], stride = 1, padding = 1, out_channels = 128, kernel_size = 3),
                                     nn.ReLU(),
-                                    nn.Conv2d(in_channels = 128, stride = 2, padding = 1, out_channels = self.out_channels[3], kernel_size = 3)
+                                    nn.Conv2d(in_channels = 128, stride = 2, padding = 1, out_channels = self.output_channels[3], kernel_size = 3)
         )
         self.layer_5 = nn.Sequential(
                                     nn.ReLU(),
-                                    nn.Conv2d(in_channels = self.out_channels[3], padding = 1, stride = 1, out_channels = 128, kernel_size = 3),
+                                    nn.Conv2d(in_channels = self.output_channels[3], padding = 1, stride = 1, out_channels = 128, kernel_size = 3),
                                     nn.ReLU(),
-                                    nn.Conv2d(in_channels = 128, stride = 2, padding = 1, out_channels = self.out_channels[4], kernel_size = 3)
+                                    nn.Conv2d(in_channels = 128, stride = 2, padding = 1, out_channels = self.output_channels[4], kernel_size = 3)
         )
         self.layer_6 = nn.Sequential(
                                     nn.ReLU(),
-                                    nn.Conv2d(in_channels = self.out_channels[4], stride = 1, padding = 1, out_channels = 128, kernel_size = 3),
+                                    nn.Conv2d(in_channels = self.output_channels[4], stride = 1, padding = 1, out_channels = 128, kernel_size = 3),
                                     nn.ReLU(),
-                                    nn.Conv2d(in_channels = 128, stride = 2, padding = 0, out_channels = self.out_channels[5], kernel_size = 3)
+                                    nn.Conv2d(in_channels = 128, stride = 2, padding = 0, out_channels = self.output_channels[5], kernel_size = 3)
         )
         
 
