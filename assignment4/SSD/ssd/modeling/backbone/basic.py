@@ -1,4 +1,6 @@
 import torch
+from torch import nn
+
 
 
 class BasicModel(torch.nn.Module):
@@ -20,9 +22,23 @@ class BasicModel(torch.nn.Module):
         image_channels = cfg.MODEL.BACKBONE.INPUT_CHANNELS
         self.output_feature_shape = cfg.MODEL.PRIORS.FEATURE_MAPS
 
+        self.layer_1 = nn.Sequential(
+                                    nn.Conv2d(in_channels=32,stride=1,out_channels=64,kernel_size=38),
+                                    nn.MaxPool2d(stride=2,kernel_size=2),
+                                    nn.ReLU(),
+                                    nn.Conv2d(in_channels=64,stride=1,out_channels=64,kernel_size=38),
+                                    nn.MaxPool2d(stride=2,kernel_size=2),
+                                    nn.ReLU(),
+                                    nn.Conv2d(in_channels=64,stride=1,out_channels=64,kernel_size=38),
+                                    nn.ReLU(),
+                                    nn.Conv2d(in_channels = 64, stride = 2, out_channels = self.output_channels[0], kernel_size = 38)
+        )
+            
+        
+
     def forward(self, x):
         """
-        The forward functiom should output features with shape:
+        The forward function should output features with shape:
             [shape(-1, output_channels[0], 38, 38),
             shape(-1, output_channels[1], 19, 19),
             shape(-1, output_channels[2], 10, 10),
