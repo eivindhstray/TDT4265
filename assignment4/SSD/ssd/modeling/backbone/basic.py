@@ -101,7 +101,6 @@ class BasicModel(torch.nn.Module):
         out = self.layer_6(out)
         out_features.append(out)
         
-        out_features.append()
 
         for idx, feature in enumerate(out_features):
             w, h = self.output_feature_shape[idx]
