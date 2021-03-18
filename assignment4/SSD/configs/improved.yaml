@@ -14,7 +14,7 @@ SOLVER:
     MAX_ITER: 10000
     GAMMA: 0.1
     BATCH_SIZE: 16
-    LR: 2e-3
-OUTPUT_DIR: 'outputs/improved'
+    LR: 1e-3
+OUTPUT_DIR: 'outputs/improvedAdam3'
 #DATASET_DIR: "datasets"
 DATASET_DIR: "/work/datasets"
