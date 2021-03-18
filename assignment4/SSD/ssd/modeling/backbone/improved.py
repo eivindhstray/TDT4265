@@ -109,6 +109,9 @@ class ImprovedModel(torch.nn.Module):
         out = self.layer_6(out)
         out_features.append(out)
 
+        out = self.layer_7(out)
+        out_features.append(out)
+
         for idx, feature in enumerate(out_features):
             w, h = self.output_feature_shape[idx]
             out_channel = self.output_channels[idx]
