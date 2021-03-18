@@ -32,13 +32,13 @@ torch.backends.cudnn.benchmark = True
 # to be sure to reproduce your results
 torch.backends.cudnn.deterministic = True
 
- 
+
 def start_train(cfg):
     logger = logging.getLogger('SSD.trainer')
     model = SSDDetector(cfg)
     model = torch_utils.to_cuda(model)
 
-    optimizer = torch.optim.adam(
+    optimizer = torch.optim.Adam(
         model.parameters(),
         lr=cfg.SOLVER.LR
     )
