@@ -13,6 +13,7 @@ class ImprovedModel(torch.nn.Module):
      shape(-1, output_channels[3], 3, 3),
      shape(-1, output_channels[4], 1, 1)]
      where "output_channels" is the same as cfg.BACKBONE.OUT_CHANNELS
+     
     """
 
     def __init__(self, cfg):
@@ -24,61 +25,59 @@ class ImprovedModel(torch.nn.Module):
 
         self.layer_1 = nn.Sequential(
             nn.Conv2d(in_channels=image_channels, stride=1, padding=1, out_channels=32, kernel_size=3),
+            nn.BatchNorm2d(32),
             nn.MaxPool2d(stride=2, kernel_size=2),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Conv2d(in_channels=32, stride=1, padding=1, out_channels=64, kernel_size=3),
+            nn.BatchNorm2d(64),
             nn.MaxPool2d(stride=2, kernel_size=2),
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Conv2d(in_channels=64, stride=1, padding=1, out_channels=64, kernel_size=3),
+            nn.BatchNorm2d(64),
             nn.ReLU(),
-            nn.Conv2d(in_channels=64, stride=2, padding=1, out_channels=self.output_channels[0], kernel_size=3)
+            nn.Conv2d(in_channels=64, stride=2, padding=1, out_channels=self.output_channels[0], kernel_size=3),
             nn.BatchNorm2d(self.output_channels[0])
             
         )
         self.layer_2 = nn.Sequential(
+            nn.LeakyReLU(),
+            nn.Conv2d(in_channels=self.output_channels[0], stride=1, padding=1, out_channels=128, kernel_size=3),
+            nn.BatchNorm2d(128),
             nn.ReLU(),
-            nn.Conv2d(in_channels=self.output_channels[0], stride=1, padding=1, out_channels=256, kernel_size=3),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=256, stride=1, padding=1, out_channels=256, kernel_size=3),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=256, stride=2, padding=1, out_channels=self.output_channels[1], kernel_size=3),
+            nn.Conv2d(in_channels=128, stride=2, padding=1, out_channels=self.output_channels[1], kernel_size=3),
             nn.BatchNorm2d(self.output_channels[1])
         )
 
         self.layer_3 = nn.Sequential(
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Conv2d(in_channels=self.output_channels[1], stride=1, padding=1, out_channels=256, kernel_size=3),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=256, stride=1, padding=1, out_channels=256, kernel_size=3),
+            nn.BatchNorm2d(256),
             nn.ReLU(),
             nn.Conv2d(in_channels=256, stride=2, padding=1, out_channels=self.output_channels[2], kernel_size=3),
             nn.BatchNorm2d(self.output_channels[2])
         )
         self.layer_4 = nn.Sequential(
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Conv2d(in_channels=self.output_channels[2], stride=1, padding=1, out_channels=128, kernel_size=3),
+            nn.BatchNorm2d(128),
             nn.ReLU(),
-            nn.Conv2d(in_channels=128, stride=1, padding=1, out_channels=128, kernel_size=3),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=128, stride=2, padding=1, out_channels=self.output_channels[3], kernel_size=3)
+            nn.Conv2d(in_channels=128, stride=2, padding=1, out_channels=self.output_channels[3], kernel_size=3),
             nn.BatchNorm2d(self.output_channels[3])
         )
         self.layer_5 = nn.Sequential(
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Conv2d(in_channels=self.output_channels[3], padding=1, stride=1, out_channels=128, kernel_size=3),
+            nn.BatchNorm2d(128),
             nn.ReLU(),
-            nn.Conv2d(in_channels=128, stride=1, padding=1, out_channels=128, kernel_size=3),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=128, stride=2, padding=1, out_channels=self.output_channels[4], kernel_size=3)
+            nn.Conv2d(in_channels=128, stride=2, padding=1, out_channels=self.output_channels[4], kernel_size=3),
             nn.BatchNorm2d(self.output_channels[4])
         )
         self.layer_6 = nn.Sequential(
-            nn.ReLU(),
+            nn.LeakyReLU(),
             nn.Conv2d(in_channels=self.output_channels[4], stride=1, padding=1, out_channels=128, kernel_size=3),
+            nn.BatchNorm2d(128),
             nn.ReLU(),
-            nn.Conv2d(in_channels=128, stride=1, padding=1, out_channels=128, kernel_size=3),
-            nn.ReLU(),
-            nn.Conv2d(in_channels=128, stride=2, padding=0, out_channels=self.output_channels[5], kernel_size=3)
+            nn.Conv2d(in_channels=128, stride=2, padding=0, out_channels=self.output_channels[5], kernel_size=3),
             nn.BatchNorm2d(self.output_channels[5])
 
         )
@@ -97,6 +96,7 @@ class ImprovedModel(torch.nn.Module):
             shape(-1, output_channels[0], 38, 38),
         """
         out_features = []
+        
         out = x
 
         out = self.layer_1(out)
@@ -116,7 +116,9 @@ class ImprovedModel(torch.nn.Module):
 
         out = self.layer_6(out)
         out_features.append(out)
-
+        
+        out_features = out_features
+        
         for idx, feature in enumerate(out_features):
             w, h = self.output_feature_shape[idx]
             out_channel = self.output_channels[idx]
