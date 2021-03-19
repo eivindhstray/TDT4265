@@ -43,6 +43,15 @@ def start_train(cfg):
         lr=cfg.SOLVER.LR
     )
 
+    '''
+    optimizer = torch.optim.SGD(
+        model.parameters(),
+        lr=cfg.SOLVER.LR,
+        momentum=cfg.SOLVER.MOMENTUM,
+        weight_decay=cfg.SOLVER.WEIGHT_DECAY
+    )
+    '''
+
 
     arguments = {"iteration": 0}
     save_to_disk = True
