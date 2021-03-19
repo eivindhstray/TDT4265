@@ -22,6 +22,7 @@ class ImprovedMoreModel(torch.nn.Module):
         self.output_channels = output_channels
         image_channels = cfg.MODEL.BACKBONE.INPUT_CHANNELS
         self.output_feature_shape = cfg.MODEL.PRIORS.FEATURE_MAPS
+        #cfg.MODEL.THRESHOLD = 0.7 #Try increasing this to force the "1" to improve
 
         self.layer_1 = nn.Sequential(
             nn.Conv2d(in_channels=image_channels, stride=1, padding=1, out_channels=32, kernel_size=3),
