@@ -1,2 +1,7 @@
 .DS_Store
-*.vscode
+.vscode
+.log
+tutorials
+__pycache__
+.pht
+.txt
